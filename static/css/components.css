@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: .55rem 1.1rem;
+  padding: 0.55rem 1.1rem;
   border-radius: var(--radius-md);
   text-decoration: none;
   font-weight: 700;
@@ -18,4 +18,16 @@
   background: var(--color-primary-dark);
   color: #fff;
   transform: translateY(-2px);
+}
+
+.btn-secondary {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  color: var(--color-primary-dark);
+  transform: translateX(6px);
 }
