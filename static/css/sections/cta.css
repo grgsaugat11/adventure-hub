@@ -1,0 +1,67 @@
+/* ======================================
+   CTA
+====================================== */
+
+.cta {
+  position: relative;
+
+  padding: 6rem 0;
+
+  background-image: url("../../images/mountain.jpg");
+
+  background-size: cover;
+
+  background-position: center;
+
+  overflow: hidden;
+}
+
+.cta__overlay {
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7));
+}
+
+.cta__content {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 700px;
+
+  margin-inline: auto;
+
+  text-align: center;
+}
+
+.cta__title {
+  color: white;
+
+  font-size: clamp(2.5rem, 5vw, 4rem);
+
+  line-height: 1.15;
+
+  margin: 1.5rem 0;
+
+  /* text-shadow: 0 4px 18px rgba(0, 0, 0, 0.35); */
+}
+
+.cta__title span {
+  color: var(--color-primary);
+}
+
+.cta__description {
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 1.15rem;
+
+  line-height: 1.8;
+
+  max-width: 600px;
+
+  margin-inline: auto;
+
+  margin-bottom: 2.5rem;
+}

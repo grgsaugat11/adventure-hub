@@ -1,0 +1,156 @@
+/* ======================================
+   TESTIMONIALS
+====================================== */
+
+.testimonials {
+  padding-block: var(--section-spacing);
+
+  background: radial-gradient(
+    circle at top,
+    rgba(156, 252, 151, 0.12),
+    transparent 60%
+  );
+}
+
+.testimonial {
+  max-width: 1000px;
+
+  margin-inline: auto;
+
+  display: grid;
+
+  grid-template-columns: 320px 1fr;
+
+  gap: 5rem;
+
+  align-items: center;
+
+  margin-top: 5rem;
+}
+
+.testimonial__image {
+  display: flex;
+
+  justify-content: center;
+}
+
+.testimonial__image img {
+  width: 260px;
+
+  height: 260px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  border: 6px solid white;
+
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+
+  transition: var(--transition-smooth);
+}
+
+.testimonial:hover img {
+  transform: translateY(-6px);
+}
+
+.testimonial__content {
+  position: relative;
+}
+
+.testimonial__quote-icon {
+  position: absolute;
+
+  top: -20px;
+  left: -10px;
+
+  opacity: 0.08;
+
+  z-index: 0;
+}
+
+.testimonial__quote-icon svg {
+  width: 64px;
+
+  height: 64px;
+}
+
+.testimonial blockquote {
+  font-size: 1.5rem;
+
+  line-height: 1.8;
+
+  font-style: italic;
+
+  color: var(--color-text);
+
+  margin-bottom: 2rem;
+
+  position: relative;
+
+  z-index: 1;
+
+  max-width: 650px;
+}
+
+.testimonial__rating {
+  color: #ffb400;
+
+  font-size: 1.2rem;
+
+  margin-bottom: 1.5rem;
+
+  letter-spacing: 4px;
+}
+
+.testimonial__author h3 {
+  font-size: 1.3rem;
+
+  margin-bottom: 0.3rem;
+}
+
+.testimonial__author span {
+  color: var(--color-text-light);
+}
+
+.testimonial__navigation {
+  margin-top: 4rem;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 1.5rem;
+}
+
+.testimonial__navigation span {
+  font-weight: 600;
+
+  letter-spacing: 2px;
+}
+
+.testimonial__navigation button {
+  width: 48px;
+
+  height: 48px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: white;
+
+  box-shadow: var(--shadow-sm);
+
+  transition: var(--transition);
+}
+
+.testimonial__navigation button:hover {
+  background: var(--color-primary);
+
+  color: white;
+}
