@@ -15,24 +15,24 @@
 }
 
 .hero__image {
-    flex: 1;
-    height: 600px;
+  flex: 1;
+  height: 600px;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    position: relative;
+  position: relative;
 
-    border-radius: 24px;
+  border-radius: 24px;
 
-    transform-style: preserve-3d;
+  transform-style: preserve-3d;
 
-    transition: transform .15s ease-out;
+  transition: transform 0.15s ease-out;
 
-    box-shadow:
-        0 30px 60px rgba(0,0,0,.12),
-        0 10px 25px rgba(0,0,0,.08);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.12),
+    0 10px 25px rgba(0, 0, 0, 0.08);
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .hero__image-img {
@@ -53,6 +53,12 @@
   color: var(--color-primary);
   font-weight: 600;
   margin-bottom: var(--space-lg);
+}
+
+.hero__badge svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.3;
 }
 
 .hero__title {
@@ -114,6 +120,13 @@
   font-size: 1.2rem;
 }
 
+.hero__feature svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--color-primary);
+  stroke-width: 2.2;
+}
+
 .hero__feature p {
   font-weight: 500;
   color: var(--color-text);
@@ -137,61 +150,4 @@
 .hero__card--travellers {
   bottom: 2rem;
   right: 2rem;
-}
-
-/* ======================================
-   FEATURED ADVENTURES
-====================================== */
-
-.featured{
-    padding:8rem 0;
-}
-
-.section-header{
-    text-align:center;
-    max-width:700px;
-    margin:0 auto 4rem;
-}
-
-.section-badge{
-
-    display:inline-block;
-
-    padding:.5rem 1rem;
-
-    border-radius:999px;
-
-    background:rgba(107,163,104,.12);
-
-    color:var(--color-primary);
-
-    font-weight:600;
-
-    margin-bottom:1rem;
-}
-
-.section-title{
-
-    font-family:var(--font-heading);
-
-    font-size:clamp(2.5rem,5vw,3.5rem);
-
-    margin-bottom:1rem;
-}
-
-.section-description{
-
-    color:var(--color-text-light);
-
-    font-size:1.1rem;
-}
-
-.featured__grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:2rem;
 }

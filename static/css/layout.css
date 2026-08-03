@@ -45,7 +45,7 @@ body {
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-md);
   text-decoration: none;
 }
 
@@ -68,8 +68,10 @@ body {
 }
 
 .brand-icon {
-  color: var(--color-primary);
-  font-size: 1.6rem;
+  width:34px;
+  height:34px;
+  stroke-width:2.5;
+  color:var(--color-primary);
 }
 
 .navbar__links {

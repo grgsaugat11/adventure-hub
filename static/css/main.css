@@ -1,4 +1,19 @@
 @import url("variables.css");
 @import url("layout.css");
 @import url("components.css");
-@import url("home.css");
+
+/* Home Sections */
+@import url("sections/hero.css");
+@import url("sections/featured.css");
+@import url("sections/why-us.css");
+@import url("sections/destinations.css");
+@import url("sections/testimonials.css");
+@import url("sections/cta.css");
+@import url("sections/faq.css");
+
+/* Page Styles */
+@import url("pages/home.css");
+
+/* Responsive */
+@import url("responsive/tablet.css");
+@import url("responsive/mobile.css");
