@@ -335,8 +335,8 @@
 
 .adventures__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
-  gap: 1.75rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
 }
 
 /* Listing card extensions (base card styles live in sections/featured.css) */
@@ -821,6 +821,10 @@
 
   .detail-body__layout {
     grid-template-columns: 1fr;
+  }
+
+  .adventures__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .booking-card {
