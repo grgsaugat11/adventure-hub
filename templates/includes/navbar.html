@@ -9,14 +9,14 @@
     </a>
     <ul class="navbar__links">
       <li><a href="{% url 'core:home' %}">Home</a></li>
-      <li><a href="#">Adventures</a></li>
+      <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
       <li><a href="#">Destinations</a></li>
       <li><a href="#">Blog</a></li>
       <li><a href="#">About</a></li>
     </ul>
     <div class="navbar__actions">
       <a href="#" class="navbar__login">Login</a>
-      <a href="#" class="btn btn-primary"> Start Exploring </a>
+      <a href="{% url 'adventures:list' %}" class="btn btn-primary"> Start Exploring </a>
       <button class="nav-toggle" aria-label="Open navigation">
         <i data-lucide="menu"></i>
       </button>
@@ -42,8 +42,8 @@
   </div>
 
   <ul class="mobile-menu__links">
-    <li><a href="{% url 'core:home' %}" class="active">Home</a></li>
-    <li><a href="#">Adventures</a></li>
+    <li><a href="{% url 'core:home' %}">Home</a></li>
+    <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
     <li><a href="#">Destinations</a></li>
     <li><a href="#">Blog</a></li>
     <li><a href="#">About</a></li>
@@ -52,7 +52,7 @@
   <div class="mobile-menu__actions">
     <a href="#" class="mobile-menu__login"> Login -> </a>
 
-    <a href="#" class="btn btn-primary"> Start Exploring </a>
+    <a href="{% url 'adventures:list' %}" class="btn btn-primary"> Start Exploring </a>
   </div>
 </div>
 
