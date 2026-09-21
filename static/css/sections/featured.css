@@ -49,6 +49,134 @@
 }
 
 /* ======================================
+   FEATURED SLIDER (HOMEPAGE)
+====================================== */
+
+.featured__slider {
+  position: relative;
+  --featured-peek: 72px;
+  --featured-gap: 1rem;
+}
+
+.featured__viewport {
+  overflow: hidden;
+  padding: 1.25rem 0 2rem;
+}
+
+.featured__track {
+  display: flex;
+  gap: var(--featured-gap);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.featured__slide {
+  min-width: 0;
+  flex: 0 0 calc(100% - 2 * (var(--featured-peek) + var(--featured-gap)));
+  display: flex;
+  transform: scale(0.95);
+  opacity: 0.5;
+  transition:
+    transform 0.55s ease,
+    opacity 0.55s ease;
+}
+
+.featured__slide.is-active {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.featured__slide .adventure-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.featured__slide .adventure-card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.featured__slide .adventure-card__footer {
+  margin-top: auto;
+}
+
+.featured__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 50px;
+  height: 50px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: #fff;
+  box-shadow: var(--shadow-md);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.featured__nav:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.featured__nav:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.featured__nav--prev {
+  left: 0;
+}
+
+.featured__nav--next {
+  right: 0;
+}
+
+.featured__nav svg {
+  width: 22px;
+  height: 22px;
+}
+
+.featured__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.featured__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(81, 91, 58, 0.25);
+  cursor: pointer;
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
+}
+
+.featured__dot.is-active {
+  width: 26px;
+  background: var(--color-primary);
+}
+
+.featured__dot:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ======================================
    ADVENTURE CARD
 ====================================== */
 
@@ -168,4 +296,47 @@
   display: flex;
   justify-content: center;
   margin-top: 4rem;
+}
+
+/* ======================================
+   RESPONSIVE
+====================================== */
+
+@media (max-width: 768px) {
+  .featured__slider {
+    --featured-peek: 36px;
+    --featured-gap: 0.75rem;
+  }
+
+  .featured__nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .featured__nav svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured__slider {
+    --featured-peek: 28px;
+    --featured-gap: 0.625rem;
+  }
+
+  .featured__nav {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .featured__track {
+    transition: none;
+  }
+
+  .featured__slide {
+    transition: none;
+  }
 }
