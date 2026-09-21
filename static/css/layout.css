@@ -31,7 +31,7 @@ body {
   z-index: 1000;
 }
 
-.navbar .container {
+.navbar__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -68,10 +68,10 @@ body {
 }
 
 .brand-icon {
-  width:34px;
-  height:34px;
-  stroke-width:2.5;
-  color:var(--color-primary);
+  width: 34px;
+  height: 34px;
+  stroke-width: 2.5;
+  color: var(--color-primary);
 }
 
 .navbar__links {
@@ -121,10 +121,294 @@ body {
 .navbar__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: 2rem;
+}
+
+.nav-toggle {
+  display: none;
+
+  background: none;
+
+  border: none;
+
+  cursor: pointer;
+
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 10px;
+
+  transition: var(--transition);
+}
+
+.nav-toggle:hover {
+  background: #f3f4f6;
+}
+
+.nav-toggle svg {
+  width: 24px;
+
+  height: 24px;
 }
 
 /* .navbar__actions > a {
   text-decoration: none;
   color: var(--color-text);
 } */
+
+/* ==========================
+   TABLET
+========================== */
+
+@media (max-width: 992px) {
+  .navbar__links {
+    display: none;
+  }
+
+  .navbar__login {
+    display: none;
+  }
+
+  .navbar__actions .btn {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+  }
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+.mobile-menu {
+  position: fixed;
+
+  top: 0;
+
+  right: -100%;
+
+  width: min(360px, 90vw);
+
+  height: 100vh;
+
+  background: white;
+
+  z-index: 2000;
+
+  transition: right 0.35s ease;
+
+  border-radius:24px 0 0 24px;
+box-shadow:-10px 0 40px rgba(0,0,0,.15);
+}
+
+.mobile-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition: 0.35s;
+
+  z-index: 1999;
+}
+
+.mobile-menu.active {
+  right: 0;
+}
+
+.mobile-overlay.active {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.mobile-menu__header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 1.5rem;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.mobile-menu__close {
+  background: none;
+
+  border: none;
+
+  cursor: pointer;
+
+  width: 44px;
+
+  height: 44px;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  transition: var(--transition);
+}
+
+.mobile-menu__close:hover {
+  background: #f3f4f6;
+}
+
+.mobile-menu__links {
+  list-style: none;
+
+  padding: 2rem 1.5rem;
+}
+
+.mobile-menu__links li {
+  margin-bottom: 0.25rem;
+
+      opacity:0;
+
+    transform:translateX(20px);
+
+    transition:.35s ease;
+}
+
+.mobile-menu.active .mobile-menu__links li{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+.mobile-menu.active .mobile-menu__links li:nth-child(1){
+
+    transition-delay:.15s;
+
+}
+
+.mobile-menu.active .mobile-menu__links li:nth-child(2){
+
+    transition-delay:.20s;
+
+}
+
+.mobile-menu.active .mobile-menu__links li:nth-child(3){
+
+    transition-delay:.25s;
+
+}
+
+.mobile-menu.active .mobile-menu__links li:nth-child(4){
+
+    transition-delay:.30s;
+
+}
+
+.mobile-menu.active .mobile-menu__links li:nth-child(5){
+
+    transition-delay:.35s;
+
+}
+
+.mobile-menu__links a {
+  display: block;
+
+  text-decoration: none;
+
+  color: var(--color-text);
+
+  font-weight: 600;
+
+  padding: 1rem 1.5rem;
+
+  transition: var(--transition);
+}
+
+.mobile-menu__links a:hover {
+  color: var(--color-primary);
+}
+
+.mobile-menu__actions {
+  padding: 0 1.5rem 2rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1rem;
+
+      opacity:0;
+
+    transform:translateY(20px);
+
+    transition:.35s ease .28s;
+}
+
+.mobile-menu.active .mobile-menu__actions{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+.mobile-menu__links a.active{
+
+    color:var(--color-primary);
+
+    font-weight:700;
+
+}
+
+.mobile-menu__login {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-decoration: none;
+
+  color: var(--color-text);
+
+  font-weight: 600;
+
+  padding: 1rem 0;
+
+  transition: var(--transition);
+}
+
+.mobile-menu__login:hover {
+  color: var(--color-primary);
+}
+
+.mobile-menu__actions {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  margin-top: auto;
+
+  padding: 1.5rem;
+}
+
+@media (max-width: 576px) {
+}

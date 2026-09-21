@@ -15,6 +15,7 @@
 
 /* Page Styles */
 @import url("pages/home.css");
+@import url("pages/adventures.css");
 
 /* Responsive */
 @import url("responsive/tablet.css");

@@ -46,6 +46,7 @@
     --space-2xl: 3rem;
     --space-3xl: 4rem;
     --space-4xl: 6rem;
+    --section-spacing: 5rem;
 
     /* ========= Radius ========= */
 
@@ -67,4 +68,10 @@
     /* ========= Animation ========= */
 
     --transition: .25s ease;
+
+    /* ========= Breakpoints ========= */
+
+    --breakpoint-lg: 992px;
+    --breakpoint-md: 768px;
+    --breakpoint-sm: 576px;
 }
