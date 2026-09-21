@@ -1,0 +1,56 @@
+<article class="adventure-card">
+
+  <a href="{{ adventure.get_absolute_url }}" class="adventure-card__image">
+    {% if adventure.image %}
+    <img
+      src="{{ adventure.image.url }}"
+      alt="{{ adventure.image_alt|default:adventure.title }}"
+      loading="lazy"
+    />
+    {% else %}
+    <div class="adventure-card__placeholder" role="img" aria-label="{{ adventure.title }}">
+      <i data-lucide="mountain" aria-hidden="true"></i>
+    </div>
+    {% endif %}
+
+    <div class="adventure-card__badges">
+      <span class="adventure-card__rating">
+        <i data-lucide="star" aria-hidden="true"></i>
+        {{ adventure.rating|floatformat:1 }}
+      </span>
+      <span class="adventure-card__duration">
+        <i data-lucide="calendar" aria-hidden="true"></i>
+        {{ adventure.duration_days }} days
+      </span>
+    </div>
+  </a>
+
+  <div class="adventure-card__content">
+    <div class="adventure-card__meta">
+      <span class="adventure-card__region">
+        <i data-lucide="map-pin" aria-hidden="true"></i>
+        {{ adventure.region.name }}
+      </span>
+      <span class="adventure-card__difficulty difficulty--{{ adventure.difficulty }}">
+        {{ adventure.get_difficulty_display }}
+      </span>
+    </div>
+
+    <h3 class="adventure-card__title">
+      <a href="{{ adventure.get_absolute_url }}">{{ adventure.title }}</a>
+    </h3>
+
+    <p class="adventure-card__description">{{ adventure.short_description }}</p>
+
+    <div class="adventure-card__footer">
+      <span class="price">
+        From <strong>{{ adventure.display_price }}</strong>
+      </span>
+      <a class="adventure-card__link" href="{{ adventure.get_absolute_url }}">
+        View Details
+        <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+
+</article>

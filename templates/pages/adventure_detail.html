@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ adventure.title }} | Adventure Nepal{% endblock %}
+
+{% block content %}
+
+<!-- ============ BREADCRUMB ============ -->
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="{% url 'core:home' %}">Home</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="{% url 'adventures:list' %}">Adventures</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">
+          {{ adventure.title|truncatechars:32 }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ DETAIL HERO ============ -->
+<section class="detail-hero">
+  <div class="container">
+    <div class="detail-hero__card">
+      {% if adventure.image %}
+      <img
+        src="{{ adventure.image.url }}"
+        alt="{{ adventure.image_alt|default:adventure.title }}"
+      />
+      {% endif %}
+
+      <div class="detail-hero__overlay"></div>
+
+      <div class="detail-hero__content">
+        <span class="section-badge">{{ adventure.region.name }}</span>
+        <h1>{{ adventure.title }}</h1>
+        <p>{{ adventure.short_description }}</p>
+
+        <div class="detail-hero__facts">
+          <span class="detail-fact">
+            <i data-lucide="star" aria-hidden="true"></i>
+            {{ adventure.rating|floatformat:1 }}
+            <em>({{ adventure.review_count }})</em>
+          </span>
+          <span class="detail-fact">
+            <i data-lucide="calendar" aria-hidden="true"></i>
+            {{ adventure.duration_days }} days
+          </span>
+          <span class="detail-fact">
+            <i data-lucide="gauge" aria-hidden="true"></i>
+            {{ adventure.get_difficulty_display }}
+          </span>
+          <span class="detail-fact">
+            <i data-lucide="users" aria-hidden="true"></i>
+            Max {{ adventure.max_group_size }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DETAIL BODY ============ -->
+<section class="detail-body">
+  <div class="container">
+    <div class="detail-body__layout">
+
+      <!-- Overview -->
+      <div class="detail-overview">
+        <span class="section-badge">About this adventure</span>
+        <h2 class="detail-overview__title">The Experience</h2>
+        <p class="detail-overview__text">{{ adventure.overview }}</p>
+
+        {% if adventure.activities.count %}
+        <div class="detail-activities">
+          <h3>What you'll do</h3>
+          <div class="detail-activities__chips">
+            {% for activity in adventure.activities.all %}
+            <span class="chip chip--activity">
+              <i data-lucide="check" aria-hidden="true"></i>
+              {{ activity.name }}
+            </span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Booking card -->
+      <aside class="booking-card" aria-label="Booking summary">
+        <div class="booking-card__price">
+          <span class="booking-card__label">From</span>
+          <strong>{{ adventure.display_price }}</strong>
+          <span class="booking-card__per">/ person</span>
+        </div>
+        <ul class="booking-card__list">
+          <li>
+            <i data-lucide="map-pin" aria-hidden="true"></i>
+            Region — {{ adventure.region.name }}
+          </li>
+          <li>
+            <i data-lucide="calendar" aria-hidden="true"></i>
+            Duration — {{ adventure.duration_days }} days
+          </li>
+          <li>
+            <i data-lucide="gauge" aria-hidden="true"></i>
+            Difficulty — {{ adventure.get_difficulty_display }}
+          </li>
+          <li>
+            <i data-lucide="users" aria-hidden="true"></i>
+            Group size — up to {{ adventure.max_group_size }}
+          </li>
+        </ul>
+        <a href="#" class="btn btn-primary booking-card__cta">
+          Book This Adventure
+          <i data-lucide="arrow-right" aria-hidden="true"></i>
+        </a>
+        <p class="booking-card__note">
+          Free cancellation up to 15 days before departure.
+        </p>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ RELATED ============ -->
+{% if related_adventures %}
+<section class="related">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">More like this</span>
+      <h2 class="section-title">
+        More in {{ adventure.region.name }}
+      </h2>
+    </div>
+    <div class="featured__grid">
+      {% for related in related_adventures %}
+        {% include "pages/includes/adventure_card.html" with adventure=related %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "core/sections/footer.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/adventures.js' %}"></script>
+{% endblock %}

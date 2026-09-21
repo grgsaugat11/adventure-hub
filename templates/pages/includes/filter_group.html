@@ -1,0 +1,18 @@
+<div class="filters__group">
+  <h4 class="filters__title">{{ title }}</h4>
+  <ul class="filters__list">
+    {% for option in options %}
+    <li>
+      <a
+        class="filters__option{% if option.selected %} is-selected{% endif %}"
+        href="?{{ option.href }}"
+        {% if option.selected %}aria-current="true"{% endif %}
+      >
+        <i data-lucide="check" class="filters__check" aria-hidden="true"></i>
+        <span class="filters__label">{{ option.name }}</span>
+        <span class="filters__count">{{ option.count }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

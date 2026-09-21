@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Adventures | Adventure Nepal{% endblock %}
+
+{% block content %}
+
+<!-- ============ BREADCRUMB ============ -->
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="{% url 'core:home' %}">Home</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">
+          Adventures
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="adventures-hero">
+  <div class="container">
+    <span class="section-badge">Adventure Nepal</span>
+    <h1 class="adventures-hero__title">
+      Find Your Next <span>Adventure</span>
+    </h1>
+    <p class="adventures-hero__subtitle">
+      Hand-picked treks, jungle safaris, river expeditions and cultural tours
+      across every corner of Nepal.
+    </p>
+  </div>
+</section>
+
+<!-- ============ LISTING ============ -->
+<section class="adventures">
+  <div class="container">
+    <div class="adventures__layout">
+
+      <!-- ===== FILTERS SIDEBAR ===== -->
+      <aside class="filters" id="adventure-filters" aria-label="Filter adventures">
+        <div class="filters__header">
+          <h3 class="filters__heading">Filters</h3>
+          <button type="button" class="filters__close" data-filter-close aria-label="Close filters">
+            <i data-lucide="x" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        {% if active_filters %}
+        <div class="filters__active">
+          {% for filter in active_filters %}
+          <a class="chip" href="?{{ filter.remove_url }}">
+            {{ filter.label }}
+            <i data-lucide="x" aria-hidden="true"></i>
+          </a>
+          {% endfor %}
+          <a class="chip chip--clear" href="{% url 'adventures:list' %}">Clear all</a>
+        </div>
+        {% endif %}
+
+        {% include "pages/includes/filter_group.html" with title="Region" options=regions %}
+        {% include "pages/includes/filter_group.html" with title="Difficulty" options=difficulties %}
+        {% include "pages/includes/filter_group.html" with title="Duration" options=durations %}
+        {% include "pages/includes/filter_group.html" with title="Price" options=prices %}
+        {% include "pages/includes/filter_group.html" with title="Activity Type" options=activities %}
+      </aside>
+
+      <!-- ===== RESULTS ===== -->
+      <div class="adventures__main">
+
+        <!-- Toolbar -->
+        <div class="adventures__toolbar">
+          <form class="adventures__form" method="get" action="{% url 'adventures:list' %}" role="search">
+            {% if request.GET.region %}<input type="hidden" name="region" value="{{ request.GET.region }}" />{% endif %}
+            {% if request.GET.difficulty %}<input type="hidden" name="difficulty" value="{{ request.GET.difficulty }}" />{% endif %}
+            {% if request.GET.activity %}<input type="hidden" name="activity" value="{{ request.GET.activity }}" />{% endif %}
+            {% if request.GET.duration %}<input type="hidden" name="duration" value="{{ request.GET.duration }}" />{% endif %}
+            {% if request.GET.price %}<input type="hidden" name="price" value="{{ request.GET.price }}" />{% endif %}
+
+            <div class="adventures__search">
+              <i data-lucide="search" class="adventures__search-icon" aria-hidden="true"></i>
+              <input
+                type="search"
+                name="q"
+                value="{{ request.GET.q }}"
+                placeholder="Search adventures…"
+                aria-label="Search adventures"
+              />
+            </div>
+
+            <select
+              class="adventures__sort"
+              name="sort"
+              aria-label="Sort results"
+              data-sort-select
+            >
+              <option value="recommended" {% if request.GET.sort == 'recommended' or not request.GET.sort %}selected{% endif %}>Recommended</option>
+              <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Top Rated</option>
+              <option value="price_low" {% if request.GET.sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+              <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+              <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
+            </select>
+          </form>
+
+          <p class="adventures__count" data-results-count>
+            Showing {{ object_list|length }}
+            {% if page_obj.paginator.count != object_list|length %}
+              of {{ page_obj.paginator.count }}
+            {% endif %}
+            experiences
+          </p>
+
+          <button type="button" class="btn btn-outline adventures__filters-toggle" data-filter-toggle>
+            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+            Filters
+          </button>
+        </div>
+
+        <!-- Grid -->
+        {% if adventures %}
+        <div class="adventures__grid">
+          {% for adventure in adventures %}
+            {% include "pages/includes/adventure_card.html" with adventure=adventure %}
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="adventures__empty">
+          <i data-lucide="compass" aria-hidden="true"></i>
+          <h3>No adventures matched your filters</h3>
+          <p>Try removing a filter or searching with different keywords.</p>
+          <a href="{% url 'adventures:list' %}" class="btn btn-primary">View all adventures</a>
+        </div>
+        {% endif %}
+
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav class="pagination" aria-label="Pagination">
+          {% if page_obj.has_previous %}
+          <a
+            class="pagination__link"
+            href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}"
+            rel="prev"
+            aria-label="Previous page"
+          >
+            <i data-lucide="chevron-left" aria-hidden="true"></i>
+          </a>
+          {% endif %}
+
+          {% for page_num in page_obj.paginator.page_range %}
+            {% if page_num == page_obj.number %}
+            <span class="pagination__link pagination__link--active" aria-current="page">{{ page_num }}</span>
+            {% else %}
+            <a class="pagination__link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_num }}">{{ page_num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+          <a
+            class="pagination__link"
+            href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}"
+            rel="next"
+            aria-label="Next page"
+          >
+            <i data-lucide="chevron-right" aria-hidden="true"></i>
+          </a>
+          {% endif %}
+        </nav>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% include "core/sections/footer.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/adventures.js' %}"></script>
+{% endblock %}

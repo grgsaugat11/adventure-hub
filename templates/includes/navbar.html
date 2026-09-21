@@ -1,28 +1,59 @@
 <nav class="navbar">
-    <div class="container">
-        <a href="{% url 'core:home' %}" class="navbar__brand">
-            <i class="brand-icon" data-lucide="mountain-snow"></i>
-            <div class="brand-text">
-                <span class="brand-title">
-                    Adventure Nepal
-                </span>
-                <span class="brand-tagline">
-                    Explore Beyond
-                </span>
-            </div>
-        </a>
-        <ul class="navbar__links">
-            <li><a href="{% url 'core:home' %}">Home</a></li>
-            <li><a href="#">Adventures</a></li>
-            <li><a href="#">Destinations</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-        <div class="navbar__actions">
-            <a href="#" class="navbar__login">Login</a>
-            <a href="#" class="btn btn-primary">
-                Start Exploring
-            </a>
-        </div>
+  <div class="container navbar__container">
+    <a href="{% url 'core:home' %}" class="navbar__brand">
+      <i class="brand-icon" data-lucide="mountain-snow"></i>
+      <div class="brand-text">
+        <span class="brand-title"> Adventure Nepal </span>
+        <span class="brand-tagline"> Explore Beyond </span>
+      </div>
+    </a>
+    <ul class="navbar__links">
+      <li><a href="{% url 'core:home' %}">Home</a></li>
+      <li><a href="#">Adventures</a></li>
+      <li><a href="#">Destinations</a></li>
+      <li><a href="#">Blog</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="navbar__actions">
+      <a href="#" class="navbar__login">Login</a>
+      <a href="#" class="btn btn-primary"> Start Exploring </a>
+      <button class="nav-toggle" aria-label="Open navigation">
+        <i data-lucide="menu"></i>
+      </button>
     </div>
+  </div>
 </nav>
+
+<div class="mobile-menu">
+  <div class="mobile-menu__header">
+    <a href="{% url 'core:home' %}" class="navbar__brand">
+      <i class="brand-icon" data-lucide="mountain-snow"></i>
+
+      <div class="brand-text">
+        <span class="brand-title"> Adventure Nepal </span>
+
+        <span class="brand-tagline"> Explore Beyond </span>
+      </div>
+    </a>
+
+    <button class="mobile-menu__close" aria-label="Close menu">
+      <i data-lucide="x"></i>
+    </button>
+  </div>
+
+  <ul class="mobile-menu__links">
+    <li><a href="{% url 'core:home' %}" class="active">Home</a></li>
+    <li><a href="#">Adventures</a></li>
+    <li><a href="#">Destinations</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+
+  <div class="mobile-menu__actions">
+    <a href="#" class="mobile-menu__login"> Login -> </a>
+
+    <a href="#" class="btn btn-primary"> Start Exploring </a>
+  </div>
+</div>
+
+<div class="mobile-overlay"></div>
