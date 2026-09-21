@@ -9,7 +9,9 @@
 @import url("sections/destinations.css");
 @import url("sections/testimonials.css");
 @import url("sections/cta.css");
+@import url("sections/blog.css");
 @import url("sections/faq.css");
+@import url("sections/footer.css");
 
 /* Page Styles */
 @import url("pages/home.css");

@@ -61,13 +61,15 @@
 
   box-shadow: var(--shadow-sm);
 
-  transition: 300ms ease;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .adventure-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
 
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
 }
 
 .adventure-card__image {
@@ -85,7 +87,7 @@
 
   object-fit: cover;
 
-  transition: 400ms ease;
+  transition: transform .45s ease;
 }
 
 .adventure-card:hover img {

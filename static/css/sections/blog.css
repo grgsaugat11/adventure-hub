@@ -1,0 +1,171 @@
+.blog-preview {
+  padding: 7rem 0;
+
+  background: var(--color-surface);
+}
+
+.blog-preview__grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 2rem;
+
+  margin-top: 4rem;
+}
+
+.blog-card {
+  background: #fff;
+
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-10px);
+
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
+}
+
+.blog-card h3{
+
+    min-height:72px;
+
+    line-height:1.35;
+
+    margin:1rem 0;
+
+}
+
+.blog-card p{
+
+    line-height:1.7;
+
+}
+
+.blog-card__image {
+  position: relative;
+
+  height: 240px;
+
+  overflow: hidden;
+}
+
+.blog-card__image img {
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.45s ease;
+}
+
+.blog-card:hover .blog-card__image img {
+  transform: scale(1.08);
+}
+
+.blog-card__content {
+  padding: 2.2rem;
+}
+
+.blog-card__meta {
+  display: flex;
+
+  gap: 1rem;
+
+  font-size: 0.85rem;
+
+  color: var(--color-text-light);
+
+  margin-bottom: 1rem;
+}
+
+.blog-card__category {
+  position: absolute;
+
+  left: 1rem;
+
+  top: 1rem;
+
+  padding: 0.45rem 0.9rem;
+
+  border-radius: 999px;
+
+  background: var(--color-primary);
+
+  color: white;
+
+  font-size: 0.75rem;
+
+  font-weight: 600;
+
+  /* transition: transform .3s ease; */
+}
+
+/* .blog-card:hover .blog-card__category{
+
+    transform:translateY(-2px);
+
+} */
+
+.category-blue {
+  background: #2563eb;
+}
+
+.category-orange {
+  background: #ea580c;
+}
+
+.blog-card__link {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-top: 1.5rem;
+
+  text-decoration: none;
+
+  color: var(--color-primary);
+
+  font-weight: 600;
+}
+
+.blog-card__link svg,
+.blog-preview__footer svg {
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-card__link svg,
+.blog-preview__footer:hover svg {
+  transform: translateX(6px);
+}
+
+.blog-preview__footer {
+  text-align: center;
+
+  margin-top: 5rem;
+}
+
+.blog-preview__footer a {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  color: var(--color-primary);
+
+  text-decoration: none;
+
+  font-weight: 700;
+}

@@ -14,6 +14,8 @@
   background-position: center;
 
   overflow: hidden;
+
+  margin-bottom: 0;
 }
 
 .cta__overlay {
