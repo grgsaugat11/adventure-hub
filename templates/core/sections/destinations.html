@@ -1,5 +1,4 @@
-{% load static %}
-
+{% if highlight_destinations %}
 <section class="destinations">
   <div class="container">
     <div class="section-header">
@@ -17,91 +16,27 @@
     </div>
 
     <div class="destination-grid">
-      <article class="destination-card destination-card--large">
-        <img src="{% static 'images/popular/mountain.jpg' %}" alt="Everest" />
-
-        <div class="destination-card__overlay">
-          <div class="destination-card__content">
-            <div class="destination-card__location">
-              <i data-lucide="map-pinned"></i>
-              Everest Region
-            </div>
-
-            <h3>Everest Base Camp</h3>
-
-            <p>Roof of the World</p>
-            <div class="destination-card__extra">
-              <span class="destination-link">
-                Explore
-                <i data-lucide="arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="destination-card">
-        <img src="{% static 'images/popular/lakeside.jpg' %}" alt="Pokhara" />
-
-        <div class="destination-card__overlay">
-          <div class="destination-card__content">
-            <div class="destination-card__location">
-              <i data-lucide="map-pinned"></i>
-              Gandaki
-            </div>
-
-            <h3>Pokhara</h3>
-
-            <p>City of Lakes</p>
-            <div class="destination-card__extra">
-              <span class="destination-link">
-                Explore
-                <i data-lucide="arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="destination-card">
-        <img src="{% static 'images/popular/safari.jpg' %}" alt="Chitwan" />
-
-        <div class="destination-card__overlay">
-          <div class="destination-card__content">
-            <div class="destination-card__location">
-              <i data-lucide="map-pinned"></i>
-              Chitwan
-            </div>
-
-            <h3>National Park</h3>
-
-            <p>Wildlife Adventure</p>
-            <div class="destination-card__extra">
-              <span class="destination-link">
-                Explore
-                <i data-lucide="arrow-right"></i>
-              </span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <article class="destination-card destination-card--wide">
+      {% for region in highlight_destinations %}
+      <article class="destination-card{% if forloop.first %} destination-card--large{% endif %}{% if forloop.last %} destination-card--wide{% endif %}">
+        {% if region.image %}
         <img
-          src="{% static 'images/popular/uppermustang.jpg' %}"
-          alt="Mustang"
+          src="{{ region.image.url }}"
+          alt="{{ region.image_alt|default:region.name }}"
+          loading="lazy"
         />
+        {% endif %}
 
-        <div class="destination-card__overlay">
+        <a class="destination-card__overlay" href="{% url 'destinations:detail' region.slug %}">
           <div class="destination-card__content">
             <div class="destination-card__location">
               <i data-lucide="map-pinned"></i>
-              Mustang
+              {{ region.adventure_count }}
+              {% if region.adventure_count == 1 %}Adventure{% else %}Adventures{% endif %}
             </div>
 
-            <h3>Upper Mustang</h3>
+            <h3>{{ region.name }}</h3>
 
-            <p>The Hidden Kingdom</p>
+            <p>{{ region.description }}</p>
             <div class="destination-card__extra">
               <span class="destination-link">
                 Explore
@@ -109,8 +44,10 @@
               </span>
             </div>
           </div>
-        </div>
+        </a>
       </article>
+      {% endfor %}
     </div>
   </div>
 </section>
+{% endif %}

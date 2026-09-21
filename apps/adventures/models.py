@@ -50,6 +50,8 @@ class Region(models.Model):
     slug = models.SlugField(max_length=140, unique=True)
     description = models.CharField(max_length=255, blank=True)
     ordering = models.PositiveIntegerField(default=0)
+    image = models.ImageField(upload_to="destinations/", blank=True)
+    image_alt = models.CharField(max_length=255, blank=True)
 
     class Meta:
         ordering = ("ordering", "name")

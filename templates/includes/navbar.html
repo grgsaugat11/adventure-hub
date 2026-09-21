@@ -10,7 +10,7 @@
     <ul class="navbar__links">
       <li><a href="{% url 'core:home' %}">Home</a></li>
       <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
-      <li><a href="#">Destinations</a></li>
+      <li><a href="{% url 'destinations:list' %}">Destinations</a></li>
       <li><a href="#">Blog</a></li>
       <li><a href="#">About</a></li>
     </ul>
@@ -44,7 +44,7 @@
   <ul class="mobile-menu__links">
     <li><a href="{% url 'core:home' %}">Home</a></li>
     <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
-    <li><a href="#">Destinations</a></li>
+    <li><a href="{% url 'destinations:list' %}">Destinations</a></li>
     <li><a href="#">Blog</a></li>
     <li><a href="#">About</a></li>
   </ul>

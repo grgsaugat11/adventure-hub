@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Destinations | Adventure Nepal{% endblock %}
+
+{% block content %}
+
+<!-- ============ BREADCRUMB ============ -->
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="{% url 'core:home' %}">Home</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">
+          Destinations
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ PAGE HEADER ============ -->
+<section class="adventures-hero">
+  <div class="container">
+    <span class="section-badge">Discover Nepal</span>
+    <h1 class="adventures-hero__title">
+      Explore Nepal's <span>Destinations</span>
+    </h1>
+    <p class="adventures-hero__subtitle">
+      From the roof of the world to the wild Terai jungles — every corner of
+      Nepal holds a different adventure waiting to be discovered.
+    </p>
+  </div>
+</section>
+
+<!-- ============ DESTINATIONS LISTING ============ -->
+<section class="destinations-page">
+  <div class="container">
+    <div class="destination-grid-page">
+      {% for region in regions %}
+        {% include "pages/includes/region_card.html" with region=region %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% include "core/sections/footer.html" %}
+
+{% endblock %}

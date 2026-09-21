@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Local apps
     "apps.core",
     "apps.adventures",
+    "apps.destinations",
 ]
 
 # ===========================================

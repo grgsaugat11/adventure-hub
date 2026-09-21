@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ region.name }} | Adventure Nepal{% endblock %}
+
+{% block content %}
+
+<!-- ============ BREADCRUMB ============ -->
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item">
+          <a href="{% url 'core:home' %}">Home</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item">
+          <a href="{% url 'destinations:list' %}">Destinations</a>
+        </li>
+        <li class="breadcrumb__separator">
+          <i data-lucide="chevron-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">
+          {{ region.name }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- ============ DESTINATION HERO ============ -->
+<section class="destination-hero">
+  <div class="container">
+    <div class="destination-hero__card">
+      {% if region.image %}
+      <img
+        src="{{ region.image.url }}"
+        alt="{{ region.image_alt|default:region.name }}"
+      />
+      {% endif %}
+      <div class="destination-hero__overlay"></div>
+      <div class="destination-hero__content">
+        <span class="destination-hero__count">
+          <i data-lucide="compass" aria-hidden="true"></i>
+          {{ adventure_count }}
+          {% if adventure_count == 1 %}Adventure{% else %}Adventures{% endif %}
+        </span>
+        <h1>{{ region.name }}</h1>
+        <p>{{ region.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REGION ADVENTURES ============ -->
+<section class="destinations-page">
+  <div class="container">
+    <div class="destination-body__header">
+      <h2 class="destination-body__title">
+        Adventures in <span>{{ region.name }}</span>
+      </h2>
+      <a class="btn btn-outline" href="{% url 'adventures:list' %}?region={{ region.slug }}">
+        Filter All Adventures
+      </a>
+    </div>
+
+    {% if adventures %}
+    <div class="adventures__grid">
+      {% for adventure in adventures %}
+        {% include "pages/includes/adventure_card.html" with adventure=adventure %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="adventures__empty">
+      <i data-lucide="compass" aria-hidden="true"></i>
+      <h3>No adventures in this destination yet</h3>
+      <p>Check back soon or browse the full catalogue.</p>
+      <a href="{% url 'adventures:list' %}" class="btn btn-primary">View all adventures</a>
+    </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% include "core/sections/footer.html" %}
+
+{% endblock %}

@@ -1,0 +1,30 @@
+<a class="destination-tile" href="{% url 'destinations:detail' region.slug %}">
+
+    {% if region.image %}
+    <img
+        src="{{ region.image.url }}"
+        alt="{{ region.image_alt|default:region.name }}"
+        loading="lazy"
+    />
+    {% endif %}
+
+    <div class="destination-tile__overlay">
+        <div class="destination-tile__content">
+            <span class="destination-tile__count">
+                <i data-lucide="compass" aria-hidden="true"></i>
+                {{ region.adventure_count }}
+                {% if region.adventure_count == 1 %}Adventure{% else %}Adventures{% endif %}
+            </span>
+
+            <h3>{{ region.name }}</h3>
+
+            <p>{{ region.description }}</p>
+
+            <span class="destination-tile__link">
+                Explore
+                <i data-lucide="arrow-right" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+
+</a>

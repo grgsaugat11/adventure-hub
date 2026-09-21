@@ -254,15 +254,15 @@ ADVENTURES = (
 )
 
 REGIONS = (
-    ("everest", "Everest Region", "Sagarmatha and Khumbu Himalaya", 1),
-    ("annapurna", "Annapurna Region", "Annapurna Himalaya and the Kali Gandaki", 2),
-    ("langtang", "Langtang Region", "The close-to-Kathmandu Langtang Himal", 3),
-    ("mustang", "Mustang Region", "The trans-Himalayan rain shadow", 4),
-    ("manaslu", "Manaslu Region", "Remote border country of Gorkha", 5),
-    ("kathmandu-valley", "Kathmandu Valley", "Heritage squares and valley towns", 6),
-    ("pokhara-gandaki", "Pokhara & Gandaki", "Lakes, bazaars and Phewa Tal", 7),
-    ("chitwan-terai", "Chitwan & Terai", "Jungle parks of the lowlands", 8),
-    ("karnali", "Karnali & Far West", "The wild, hidden west", 9),
+    ("everest", "Everest Region", "Sagarmatha and Khumbu Himalaya", 1, "images/everest.jpg"),
+    ("annapurna", "Annapurna Region", "Annapurna Himalaya and the Kali Gandaki", 2, "images/annapurna.jpg"),
+    ("langtang", "Langtang Region", "The close-to-Kathmandu Langtang Himal", 3, "images/popular/mountain.jpg"),
+    ("mustang", "Mustang Region", "The trans-Himalayan rain shadow", 4, "images/popular/uppermustang.jpg"),
+    ("manaslu", "Manaslu Region", "Remote border country of Gorkha", 5, "images/mountain.jpg"),
+    ("kathmandu-valley", "Kathmandu Valley", "Heritage squares and valley towns", 6, "images/blog/temple.jpg"),
+    ("pokhara-gandaki", "Pokhara & Gandaki", "Lakes, bazaars and Phewa Tal", 7, "images/popular/lakeside.jpg"),
+    ("chitwan-terai", "Chitwan & Terai", "Jungle parks of the lowlands", 8, "images/chitwan.jpg"),
+    ("karnali", "Karnali & Far West", "The wild, hidden west", 9, "images/popular/safari.jpg"),
 )
 
 ACTIVITIES = (
@@ -282,9 +282,9 @@ ACTIVITIES = (
 class Command(BaseCommand):
     help = "Seed regions, activities and a realistic catalogue of adventures."
 
-    def _copy_image(self, source, slug):
+    def _copy_image(self, source, slug, subdir="adventures"):
         """Copy a static seed image into media once, returning the stored path."""
-        target_dir = Path(settings.MEDIA_ROOT) / "adventures"
+        target_dir = Path(settings.MEDIA_ROOT) / subdir
         target = target_dir / f"{slug}.jpg"
         if not target.exists():
             target_dir.mkdir(parents=True, exist_ok=True)
@@ -294,7 +294,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"  copied image -> {target.relative_to(settings.MEDIA_ROOT)}")
             else:
                 self.stdout.write(self.style.WARNING(f"  image missing: {source}"))
-        return f"adventures/{slug}.jpg" if target.exists() else ""
+        return f"{subdir}/{slug}.jpg" if target.exists() else ""
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -303,12 +303,20 @@ class Command(BaseCommand):
             activity, _ = Activity.objects.update_or_create(name=name)
             activity_map[activity.slug] = activity
 
-        region_map = {
-            slug: Region.objects.update_or_create(
-                slug=slug, defaults={"name": name, "description": desc, "ordering": order}
-            )[0]
-            for slug, name, desc, order in REGIONS
-        }
+        region_map = {}
+        for slug, name, desc, order, source in REGIONS:
+            image = self._copy_image(source, slug, subdir="destinations")
+            region, _ = Region.objects.update_or_create(
+                slug=slug,
+                defaults={
+                    "name": name,
+                    "description": desc,
+                    "ordering": order,
+                    "image": image,
+                    "image_alt": name,
+                },
+            )
+            region_map[slug] = region
 
         for item in ADVENTURES:
             activity_slugs = item["activities"]
