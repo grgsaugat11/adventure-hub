@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="account-page">
+  <div class="container">
+    <a href="{% url 'core:home' %}" class="account-page__back"><i data-lucide="arrow-left" aria-hidden="true"></i>Back to Home</a>
+    <div class="account-card">
+      <header class="account-card__header">
+        <span class="section-badge">Adventure Nepal</span>
+        <h1>{% block account_heading %}{% endblock %}</h1>
+        <p>{% block account_description %}{% endblock %}</p>
+      </header>
+      {% include "includes/form_messages.html" %}
+      {% block account_content %}{% endblock %}
+    </div>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}

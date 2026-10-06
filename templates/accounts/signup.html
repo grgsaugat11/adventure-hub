@@ -1,0 +1,13 @@
+{% extends "accounts/base.html" %}
+{% block title %}Create Account | Adventure Nepal{% endblock %}
+{% block account_heading %}Your Adventure Starts Here{% endblock %}
+{% block account_description %}Create an account to request trips and keep your journeys in one place.{% endblock %}
+{% block account_content %}
+<form method="post" class="site-form signup-form">
+  {% csrf_token %}<input type="hidden" name="next" value="{{ next }}" />
+  {% include "includes/form_fields.html" %}
+  <p class="form-help">Read how we use your information in our <a href="{% url 'core:privacy' %}" class="form-text-link">Privacy Policy</a>.</p>
+  <button type="submit" class="btn btn-primary form-submit">Create Account</button>
+</form>
+<p class="account-card__footer">Already have an account? <a href="{% url 'accounts:login' %}{% if next %}?next={{ next|urlencode }}{% endif %}" class="form-text-link">Login</a></p>
+{% endblock %}

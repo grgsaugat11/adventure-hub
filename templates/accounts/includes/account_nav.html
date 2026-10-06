@@ -1,0 +1,4 @@
+<nav class="account-nav" aria-label="Your account">
+  <a href="{% url 'accounts:profile' %}"{% if request.resolver_match.app_name == 'accounts' %} aria-current="page"{% endif %}><i data-lucide="user-round" aria-hidden="true"></i>Account Details</a>
+  <a href="{% url 'bookings:list' %}"{% if request.resolver_match.app_name == 'bookings' %} aria-current="page"{% endif %}><i data-lucide="calendar-days" aria-hidden="true"></i>My Bookings</a>
+</nav>

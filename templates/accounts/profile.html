@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}My Account | Adventure Nepal{% endblock %}
+{% block content %}
+<section class="workspace-page">
+  <div class="container">
+    <header class="workspace-header"><span class="section-badge">Your Adventure Nepal</span><h1>My Account</h1><p>Update your details and manage your journeys.</p></header>
+    {% include "accounts/includes/account_nav.html" %}
+    <div class="profile-layout">
+      <section class="form-panel">
+        <h2>Personal Details</h2><p class="panel-description">Signed in as <strong>{{ user.username }}</strong>.</p>
+        {% include "includes/form_messages.html" %}
+        <form method="post" class="site-form">{% csrf_token %}{% include "includes/form_fields.html" %}<div class="form-actions"><button type="submit" class="btn btn-primary">Save Changes</button></div></form>
+      </section>
+      <aside class="form-panel profile-security">
+        <h2>Account Security</h2><p>Keep your password up to date and sign out when you're done.</p>
+        <a href="{% url 'accounts:password_change' %}" class="btn btn-outline">Change Password</a>
+        <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button type="submit" class="btn btn-outline">Logout</button></form>
+      </aside>
+    </div>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}
