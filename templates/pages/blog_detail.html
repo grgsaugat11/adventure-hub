@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Adventure Nepal{% endblock %}
+
+{% block content %}
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item"><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="breadcrumb__separator"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+        <li class="breadcrumb__item"><a href="{% url 'blog:list' %}">Blog</a></li>
+        <li class="breadcrumb__separator"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">{{ post.category.name }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<article class="story-detail">
+  <div class="story-detail__container">
+    <header class="story-detail__header">
+      <a href="{% url 'blog:list' %}?category={{ post.category.slug }}" class="section-badge">{{ post.category.name }}</a>
+      <h1>{{ post.title }}</h1>
+      <p class="story-detail__intro">{{ post.excerpt }}</p>
+      <div class="story-detail__meta">
+        <span><i data-lucide="user-round" aria-hidden="true"></i>{{ post.author }}</span>
+        <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }}</time>
+        <span><i data-lucide="clock" aria-hidden="true"></i>{{ post.reading_minutes }} min read</span>
+      </div>
+    </header>
+
+    <img class="story-detail__image" src="{{ post.image_url }}" alt="{{ post.image_alt|default:post.title }}" fetchpriority="high" />
+    <div class="story-detail__body">{{ post.body|linebreaks }}</div>
+
+    <nav class="story-detail__navigation" aria-label="Continue exploring stories">
+      <a href="{% url 'blog:list' %}" class="btn btn-outline"><i data-lucide="arrow-left" aria-hidden="true"></i>Back to Stories</a>
+      <a href="{% url 'blog:list' %}?category={{ post.category.slug }}" class="story-detail__category-link">More in {{ post.category.name }} <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+    </nav>
+  </div>
+</article>
+
+{% if related_posts %}
+<section class="stories-related">
+  <div class="container">
+    <div class="stories-related__header">
+      <h2>More <span>Travel Stories</span></h2>
+      <a href="{% url 'blog:list' %}" class="btn btn-outline">View All Stories</a>
+    </div>
+    <div class="adventures__grid stories-grid">
+      {% for post in related_posts %}{% include "pages/includes/blog_card.html" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% include "core/sections/footer.html" %}
+{% endblock %}

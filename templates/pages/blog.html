@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Travel Stories & Guides | Adventure Nepal{% endblock %}
+
+{% block content %}
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item"><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="breadcrumb__separator"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">Blog</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="adventures-hero stories-header">
+  <div class="container">
+    <span class="section-badge">Travel Stories</span>
+    <h1 class="adventures-hero__title">Stories for Your Next <span>Adventure</span></h1>
+    <p class="adventures-hero__subtitle">Travel tips, destination guides and local stories to help you explore Nepal.</p>
+  </div>
+</section>
+
+<section class="stories-page" aria-label="Travel stories">
+  <div class="container">
+    <div class="stories-toolbar">
+      <form class="stories-form" method="get" role="search" action="{% url 'blog:list' %}">
+        <div class="adventures__search">
+          <i data-lucide="search" class="adventures__search-icon" aria-hidden="true"></i>
+          <input type="search" name="q" value="{{ query }}" placeholder="Search stories…" aria-label="Search travel stories" maxlength="200" />
+        </div>
+        <select class="adventures__sort" name="category" aria-label="Story category">
+          <option value="">All Categories</option>
+          {% for category in categories %}
+          <option value="{{ category.slug }}"{% if selected_category.pk == category.pk %} selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary stories-form__submit">Search</button>
+      </form>
+    </div>
+
+    <div class="stories-results">
+      <h2>{% if selected_category %}{{ selected_category.name }}{% else %}All Stories{% endif %}</h2>
+      <p>{{ page_obj.paginator.count }} stor{{ page_obj.paginator.count|pluralize:"y,ies" }}{% if query %} matching “{{ query }}”{% endif %}</p>
+    </div>
+
+    {% if query or selected_category %}
+    <div class="stories-active">
+      {% if selected_category %}<span class="chip">{{ selected_category.name }}</span>{% endif %}
+      {% if query %}<span class="chip">{{ query }}</span>{% endif %}
+      <a class="chip chip--clear" href="{% url 'blog:list' %}">Clear all</a>
+    </div>
+    {% endif %}
+
+    {% if page_obj %}
+    <div class="adventures__grid stories-grid">
+      {% for post in page_obj %}
+        {% include "pages/includes/blog_card.html" %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="adventures__empty">
+      <i data-lucide="book-open" aria-hidden="true"></i>
+      <h3>{% if query or selected_category %}No stories found{% else %}The next chapter is on its way{% endif %}</h3>
+      <p>{% if query or selected_category %}Try removing a filter or searching with different keywords.{% else %}New travel stories will be published here soon.{% endif %}</p>
+      {% if query or selected_category %}
+      <a href="{% url 'blog:list' %}" class="btn btn-primary">View all stories</a>
+      {% else %}
+      <a href="{% url 'adventures:list' %}" class="btn btn-primary">Explore adventures</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Stories pagination">
+      {% if page_obj.has_previous %}
+      <a class="pagination__link" href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page_obj.previous_page_number }}" rel="prev" aria-label="Previous page"><i data-lucide="chevron-left" aria-hidden="true"></i></a>
+      {% endif %}
+      <span class="pagination__link pagination__link--active" aria-current="page" aria-label="Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}">{{ page_obj.number }}</span>
+      {% if page_obj.has_next %}
+      <a class="pagination__link" href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page_obj.next_page_number }}" rel="next" aria-label="Next page"><i data-lucide="chevron-right" aria-hidden="true"></i></a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}

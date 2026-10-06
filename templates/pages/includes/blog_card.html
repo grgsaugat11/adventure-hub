@@ -1,0 +1,27 @@
+<article class="adventure-card story-card">
+  <a href="{{ post.get_absolute_url }}" class="adventure-card__image">
+    <img src="{{ post.image_url }}" alt="{{ post.image_alt|default:post.title }}" loading="lazy" />
+    <div class="adventure-card__badges">
+      <span class="adventure-card__duration">
+        <i data-lucide="clock" aria-hidden="true"></i>
+        {{ post.reading_minutes }} min read
+      </span>
+    </div>
+  </a>
+
+  <div class="adventure-card__content">
+    <div class="adventure-card__meta">
+      <span class="adventure-card__region">{{ post.category.name }}</span>
+      <time class="story-card__date" datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"M j, Y" }}</time>
+    </div>
+    <h3 class="adventure-card__title">
+      <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+    </h3>
+    <p class="adventure-card__description">{{ post.excerpt }}</p>
+    <div class="adventure-card__footer">
+      <a href="{{ post.get_absolute_url }}" class="btn btn-outline story-card__button" aria-label="Read story: {{ post.title }}">
+        Read Story <i data-lucide="arrow-right" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</article>
