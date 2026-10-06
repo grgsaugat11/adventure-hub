@@ -24,6 +24,9 @@ urlpatterns = [
     path("", include("apps.core.urls")),
     path("adventures/", include("apps.adventures.urls")),
     path("destinations/", include("apps.destinations.urls")),
+    path("blog/", include("apps.blog.urls")),
+    path("accounts/", include("apps.accounts.urls")),
+    path("bookings/", include("apps.bookings.urls")),
 ]
 
 # Serve uploaded media locally during development only.

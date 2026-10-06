@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.adventures",
     "apps.destinations",
+    "apps.blog",
+    "apps.accounts",
+    "apps.bookings",
 ]
 
 # ===========================================
@@ -80,6 +83,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.core.context_processors.site_details',
             ],
         },
     },
@@ -123,6 +127,34 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# ===========================================
+# ACCOUNT AND CONTACT SETTINGS
+# ===========================================
+
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:profile"
+LOGOUT_REDIRECT_URL = "core:home"
+
+# Use SMTP environment settings for live password recovery; local email prints to the console.
+EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = config("EMAIL_HOST", default="localhost")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="hello@adventurenepal.com")
+SITE_CONTACT_EMAIL = config("SITE_CONTACT_EMAIL", default="hello@adventurenepal.com")
+SITE_CONTACT_PHONE = config("SITE_CONTACT_PHONE", default="")
+SITE_SOCIAL_LINKS = [
+    {"name": name, "icon": icon, "url": config(key, default="")}
+    for name, icon, key in (
+        ("Instagram", "fa-instagram", "INSTAGRAM_URL"),
+        ("Facebook", "fa-facebook-f", "FACEBOOK_URL"),
+        ("YouTube", "fa-youtube", "YOUTUBE_URL"),
+    )
+    if config(key, default="")
+]
 
 # ===========================================
 # INTERNATIONALIZATION
