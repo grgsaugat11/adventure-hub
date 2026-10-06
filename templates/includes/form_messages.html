@@ -1,0 +1,3 @@
+{% for message in messages %}
+<div class="form-alert{% if message.tags == 'error' %} form-alert--error{% endif %}" role="status">{{ message }}</div>
+{% endfor %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Gallery | Adventure Nepal{% endblock %}
+{% block content %}
+<section class="support-page">
+  <div class="container">
+    <header class="workspace-header"><span class="section-badge">A Glimpse of Nepal</span><h1>The Adventure Gallery</h1><p>Mountains, lakes, local life and the places that inspire us to explore.</p></header>
+    <nav class="gallery-filters" aria-label="Photo categories"><a href="{% url 'core:gallery' %}"{% if not selected_category %} aria-current="page"{% endif %}>All Photos</a>{% for value, label in categories %}<a href="?category={{ value }}"{% if selected_category == value %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+    <div class="gallery-grid">
+      {% for photo in photos %}
+      <figure class="gallery-photo"><button type="button" data-gallery-photo data-src="{{ photo.image_url }}" data-alt="{{ photo.image_alt|default:photo.title }}" data-title="{{ photo.title }}" data-caption="{{ photo.caption }}" aria-label="View photo: {{ photo.title }}"><img src="{{ photo.image_url }}" alt="{{ photo.image_alt|default:photo.title }}" loading="lazy" /><span class="gallery-photo__zoom"><i data-lucide="expand" aria-hidden="true"></i></span></button><figcaption><span>{{ photo.get_category_display }}</span><h2>{{ photo.title }}</h2>{% if photo.caption %}<p>{{ photo.caption }}</p>{% endif %}</figcaption></figure>
+      {% empty %}<div class="workspace-empty"><i data-lucide="image" aria-hidden="true"></i><h2>More photos are on the way</h2><p>Explore the rest of the gallery or discover Nepal's destinations.</p><a href="{% url 'destinations:list' %}" class="btn btn-primary">Explore Destinations</a></div>{% endfor %}
+    </div>
+  </div>
+</section>
+<dialog class="gallery-dialog" aria-label="Photo viewer" data-gallery-dialog>
+  <div class="gallery-dialog__toolbar"><span data-gallery-counter aria-live="polite"></span><button type="button" data-gallery-close aria-label="Close photo viewer" autofocus><i data-lucide="x" aria-hidden="true"></i></button></div>
+  <img data-gallery-preview src="{% static 'images/everest.jpg' %}" alt="" />
+  <div class="gallery-dialog__footer"><button type="button" data-gallery-prev aria-label="Previous photo"><i data-lucide="chevron-left" aria-hidden="true"></i></button><div><h2 data-gallery-title></h2><p data-gallery-caption></p></div><button type="button" data-gallery-next aria-label="Next photo"><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
+</dialog>
+{% include "core/sections/footer.html" %}
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/gallery.js' %}"></script>{% endblock %}

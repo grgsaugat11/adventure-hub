@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | Adventure Nepal{% endblock %}
+
+{% block content %}
+<section class="breadcrumb">
+  <div class="container">
+    <nav aria-label="Breadcrumb">
+      <ol class="breadcrumb__list">
+        <li class="breadcrumb__item"><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="breadcrumb__separator"><i data-lucide="chevron-right" aria-hidden="true"></i></li>
+        <li class="breadcrumb__item breadcrumb__item--current" aria-current="page">About</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="adventures-hero about-header">
+  <div class="container">
+    <span class="section-badge">About Us</span>
+    <h1 class="adventures-hero__title">Discover <span>Adventure Nepal</span></h1>
+    <p class="adventures-hero__subtitle">Connecting curious travellers with Nepal's mountains, culture and unforgettable experiences.</p>
+  </div>
+</section>
+
+<section class="about-page">
+  <div class="container">
+    <div class="about-story">
+      <img class="about-story__image" src="{% static 'images/annapurna.jpg' %}" alt="Mountain landscape in the Annapurna region of Nepal" />
+      <div class="about-story__content">
+        <h2>A Passion for Exploration</h2>
+        <div class="about-story__text">
+          <p>Adventure Nepal is built around a simple idea: finding your next adventure should feel as exciting as the journey itself.</p>
+          <p>We bring Nepal's treks, wildlife experiences and cultural journeys together in one place. Explore destinations, compare adventures and get to know the places beyond the itinerary.</p>
+          <p>Whether you're heading into the Himalayas or taking things slowly by the lake, we're here to help you discover your kind of adventure.</p>
+        </div>
+        <div class="about-story__actions">
+          <a href="{% url 'destinations:list' %}" class="btn btn-outline">Explore Destinations <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <section class="about-principles" aria-labelledby="about-principles-title">
+      <div class="about-section__header">
+        <h2 id="about-principles-title">What Guides <span>Our Journey</span></h2>
+        <p>A few simple principles behind every experience we share.</p>
+      </div>
+      <div class="about-principles__grid">
+        <article class="about-principle">
+          <div class="about-principle__icon"><i data-lucide="compass" aria-hidden="true"></i></div>
+          <h3>Local Perspective</h3>
+          <p>Discover Nepal through its people, their stories and the places they call home.</p>
+        </article>
+        <article class="about-principle">
+          <div class="about-principle__icon"><i data-lucide="leaf" aria-hidden="true"></i></div>
+          <h3>Thoughtful Travel</h3>
+          <p>Respect local traditions, care for the trails and help preserve the places we explore.</p>
+        </article>
+        <article class="about-principle">
+          <div class="about-principle__icon"><i data-lucide="route" aria-hidden="true"></i></div>
+          <h3>Adventure for You</h3>
+          <p>Find experiences that suit your interests, your pace and your sense of adventure.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-contact" aria-labelledby="about-contact-title">
+      <div>
+        <h2 id="about-contact-title">Let's Plan Your Next <span>Adventure</span></h2>
+        <p>Have a question about exploring Nepal? We'd love to hear from you.</p>
+      </div>
+      <a href="{% url 'core:contact' %}" class="btn btn-primary">Get in Touch <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+    </section>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy | Adventure Nepal{% endblock %}
+{% block content %}
+<section class="support-page">
+  <div class="container">
+    <header class="workspace-header"><span class="section-badge">Your Information</span><h1>Privacy Policy</h1><p>How information is used when you browse, create an account or contact Adventure Nepal.</p></header>
+    <article class="privacy-content">
+      <section><h2>Information You Provide</h2><p>When you create an account, we store your username, name, email address and a hashed password. Booking requests include your preferred departure date, number of travellers, contact name, email, phone number and any notes you choose to share. Contact messages include your name, email, topic and message.</p></section>
+      <section><h2>How We Use It</h2><p>We use account information to sign you in and support password recovery. Booking details help our team review your request and discuss trip arrangements. Contact details let us respond to your questions. Requests are reviewed by the team through the site's administration area.</p></section>
+      <section><h2>Booking Requests and Payments</h2><p>Submitting a request does not make a payment or automatically confirm a departure. This site does not collect card numbers, bank credentials or online payment details. Please do not put sensitive identity or payment information in booking notes or contact messages.</p></section>
+      <section><h2>Cookies</h2><p>The site uses session cookies to keep you signed in and remember temporary messages. A security cookie helps protect form submissions. Blocking these cookies may prevent login and form submission from working correctly.</p></section>
+      <section><h2>External Services</h2><p>The site loads fonts and icons from external providers, including Google Fonts, Cloudflare's CDN and unpkg. Your browser sends requests to those providers when those resources load. Configured social links take you to external websites with their own privacy practices.</p></section>
+      <section><h2>Updating or Deleting Information</h2><p>You can edit your account name and email in My Account. To ask about access, corrections or deletion of account, booking or contact information, contact our team. Information is kept in the site's database until it is removed by the team; we will discuss your request and any necessary record-keeping with you.</p></section>
+      <section><h2>Contact</h2><p>For privacy questions, email <a href="mailto:{{ site_contact_email }}">{{ site_contact_email }}</a> or use our contact form.</p><a href="{% url 'core:contact' %}" class="btn btn-outline">Contact Our Team</a></section>
+    </article>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}

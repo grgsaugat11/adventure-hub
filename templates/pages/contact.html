@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Contact Us | Adventure Nepal{% endblock %}
+{% block content %}
+<section class="support-page">
+  <div class="container">
+    <header class="workspace-header"><span class="section-badge">Let's Talk Adventure</span><h1>Get in Touch</h1><p>Planning a trip or have a question about your request? Send us a message.</p></header>
+    <div class="contact-layout">
+      <section class="form-panel"><h2>Send a Message</h2><p class="panel-description">Fields marked * are required.</p>{% include "includes/form_messages.html" %}<form method="post" class="site-form">{% csrf_token %}{% include "includes/form_fields.html" %}<p class="form-help">Please don't include passport numbers or payment details. <a href="{% url 'core:privacy' %}" class="form-text-link">Privacy Policy</a></p><div class="form-actions"><button type="submit" class="btn btn-primary">Send Message <i data-lucide="send" aria-hidden="true"></i></button></div></form></section>
+      <aside class="contact-information">
+        <div class="form-panel"><h2>Adventure Nepal</h2><ul class="contact-information__list"><li><i data-lucide="map-pin" aria-hidden="true"></i><div><strong>Based in Nepal</strong><span>Kathmandu, Nepal</span></div></li><li><i data-lucide="mail" aria-hidden="true"></i><div><strong>Email Us</strong><a href="mailto:{{ site_contact_email }}">{{ site_contact_email }}</a></div></li>{% if site_contact_phone %}<li><i data-lucide="phone" aria-hidden="true"></i><div><strong>Call Us</strong><a href="tel:{{ site_contact_phone }}">{{ site_contact_phone }}</a></div></li>{% endif %}</ul></div>
+        <div class="form-panel"><h2>Already Requested a Trip?</h2><p>Include the reference from My Bookings so our team can find your request.</p><a href="{% url 'bookings:list' %}" class="btn btn-outline">My Bookings</a></div>
+        <a href="{% url 'core:home' %}#faq" class="form-text-link">Browse Frequently Asked Questions <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+      </aside>
+    </div>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}
