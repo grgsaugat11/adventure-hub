@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Request {{ adventure.title }} | Adventure Nepal{% endblock %}
+{% block content %}
+<section class="workspace-page">
+  <div class="container">
+    <a href="{{ adventure.get_absolute_url }}" class="account-page__back"><i data-lucide="arrow-left" aria-hidden="true"></i>Back to Adventure</a>
+    <header class="workspace-header"><span class="section-badge">Plan Your Journey</span><h1>Request This Adventure</h1><p>Tell us your preferred date and group size. Our team will confirm availability and arrangements.</p></header>
+    <div class="request-layout request-layout--create">
+      <section class="form-panel">
+        <h2>Your Trip Details</h2><p class="panel-description">Fields marked * are required. No payment is collected here.</p>
+        <form method="post" class="site-form booking-form" data-booking-form>
+          {% csrf_token %}{% include "includes/form_fields.html" %}
+          <p class="form-help">We use these details to respond to your request. <a href="{% url 'core:privacy' %}" class="form-text-link">Privacy Policy</a></p>
+          <div class="form-actions"><button type="submit" class="btn btn-primary">Submit Booking Request <i data-lucide="arrow-right" aria-hidden="true"></i></button></div>
+        </form>
+      </section>
+      <aside class="request-summary" aria-label="Adventure and estimated cost" data-booking-summary data-price="{{ adventure.price }}" data-currency="{{ adventure.currency }}">
+        {% if adventure.image %}<img class="request-summary__image" src="{{ adventure.image.url }}" alt="{{ adventure.image_alt|default:adventure.title }}" />{% endif %}
+        <div class="request-summary__content">
+          <span class="request-summary__eyebrow">{{ adventure.region.name }}</span><h2>{{ adventure.title }}</h2>
+          <dl class="summary-facts"><div><dt>Duration</dt><dd>{{ adventure.duration_days }} days</dd></div><div><dt>Group size</dt><dd>Up to {{ adventure.max_group_size }}</dd></div><div><dt>Price per person</dt><dd>{{ adventure.display_price }}</dd></div></dl>
+          <div class="summary-total"><span>Estimated total</span><strong data-booking-total>{{ adventure.display_price }}</strong></div>
+          <p class="form-help">This is a booking request, not a confirmed reservation. Our team will discuss the final arrangements and cost with you.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% include "core/sections/footer.html" %}
+{% endblock %}
+{% block extra_js %}<script src="{% static 'js/bookings.js' %}"></script>{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "accounts/base.html" %}
+{% block title %}Cancel {{ booking.reference_code }} | Adventure Nepal{% endblock %}
+{% block account_heading %}Cancel This Request?{% endblock %}
+{% block account_description %}You're about to cancel {{ booking.adventure_title }} for {{ booking.travel_date|date:"F j, Y" }}. You can submit a new request later if your plans change.{% endblock %}
+{% block account_content %}
+<form method="post" class="site-form">{% csrf_token %}<div class="form-actions"><a href="{{ booking.get_absolute_url }}" class="btn btn-outline">Keep Request</a><button type="submit" class="btn btn-primary">Confirm Cancellation</button></div></form>
+{% endblock %}

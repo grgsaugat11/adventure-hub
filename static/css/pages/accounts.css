@@ -1,0 +1,30 @@
+.account-page { padding: 2rem 0 4rem; background: var(--color-surface); }
+.account-page__back { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--color-text-light); font-size: 0.875rem; margin-bottom: 1.5rem; }
+.account-page__back:hover { color: var(--color-primary-dark); }
+.account-page__back svg { width: 16px; height: 16px; }
+.account-card { max-width: 560px; margin-inline: auto; padding: 2.5rem; background: white; border: 1px solid rgba(0, 0, 0, 0.07); border-radius: var(--radius-card); box-shadow: var(--shadow-sm); }
+.account-card__header { margin-bottom: 2rem; }
+.account-card__header .section-badge { margin-bottom: 1rem; }
+.account-card__header h1 { font-family: var(--font-heading); font-size: clamp(1.75rem, 3vw, 2rem); line-height: 1.3; margin-bottom: 0.75rem; }
+.account-card__header p { color: var(--color-text-light); line-height: 1.7; }
+.account-card__forgot { justify-self: end; font-size: 0.875rem; }
+.account-card__footer { text-align: center; font-size: 0.9375rem; border-top: 1px solid rgba(0, 0, 0, 0.08); padding-top: 1.5rem; margin-top: 1.5rem; }
+.signup-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.signup-form > * { grid-column: 1 / -1; }
+.signup-form > .form-field--first_name, .signup-form > .form-field--last_name { grid-column: auto; }
+.account-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(0, 0, 0, 0.08); margin-bottom: 2rem; }
+.account-nav a { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 48px; padding: 0.75rem 1rem; border-radius: var(--radius-md); color: var(--color-text-light); font-weight: 600; font-size: 0.9375rem; }
+.account-nav a[aria-current="page"], .account-nav a:hover { background: #eef5ec; color: var(--color-primary-dark); }
+.account-nav svg { width: 18px; height: 18px; }
+.profile-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 2rem; align-items: start; }
+.profile-security { display: grid; gap: 1.25rem; }
+.profile-security h2 { margin: 0; }
+.profile-security p { color: var(--color-text-light); line-height: 1.7; }
+.profile-security .btn { width: 100%; }
+@media (max-width: 992px) { .profile-layout { grid-template-columns: 1fr; } }
+@media (max-width: 576px) {
+  .account-card { padding: 1.5rem; }
+  .account-page { padding-bottom: 3rem; }
+  .signup-form { grid-template-columns: 1fr; }
+  .signup-form > .form-field--first_name, .signup-form > .form-field--last_name { grid-column: 1 / -1; }
+}

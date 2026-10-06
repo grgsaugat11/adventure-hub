@@ -1,0 +1,329 @@
+/* Blog layouts are scoped here so catalogue and homepage spacing stay independent. */
+.stories-header {
+  padding: 3rem 0;
+}
+
+.stories-header .section-badge {
+  margin-bottom: 0;
+}
+
+.stories-header .adventures-hero__title {
+  max-width: 900px;
+  margin: 1rem auto;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+}
+
+.stories-page {
+  padding-bottom: 4rem;
+}
+
+.stories-toolbar {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.stories-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px 112px;
+  gap: 1rem;
+  align-items: center;
+}
+
+.stories-form .adventures__search,
+.stories-form .adventures__sort {
+  min-width: 0;
+  width: 100%;
+}
+
+.stories-form__submit {
+  height: 48px;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.stories-results {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.stories-results h2 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+}
+
+.stories-results p {
+  color: var(--color-text-light);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.stories-active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stories-grid {
+  gap: 1.5rem;
+}
+
+.story-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.story-card .adventure-card__image {
+  flex-shrink: 0;
+  height: 224px;
+}
+
+.story-card .adventure-card__duration {
+  color: var(--color-text);
+}
+
+.story-card .adventure-card__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.5rem;
+}
+
+.story-card .adventure-card__meta {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.story-card .adventure-card__title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.story-card .adventure-card__description {
+  margin: 0 0 1.5rem;
+  line-height: 1.7;
+}
+
+.story-card .adventure-card__footer {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.story-card .story-card__button,
+.story-detail .btn,
+.stories-related .btn {
+  min-height: 48px;
+  padding: 0.75rem 1.25rem;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.story-card .story-card__button:hover {
+  color: white;
+  transform: none;
+}
+
+.story-card__button svg,
+.story-detail__navigation svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.story-card__date {
+  color: var(--color-text-light);
+  font-size: 0.8rem;
+}
+
+/* A single aligned column for the article title, photo, text and navigation. */
+.story-detail {
+  padding: 2.5rem 0 4rem;
+}
+
+.story-detail__container {
+  width: min(800px, 90%);
+  margin-inline: auto;
+}
+
+.story-detail__header .section-badge {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.story-detail__header h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+  line-height: 1.25;
+  margin-bottom: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.story-detail__intro {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+}
+
+.story-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  color: var(--color-text-light);
+  font-size: 0.875rem;
+  margin-top: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.story-detail__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.story-detail__meta svg {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.story-detail__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  margin: 0.5rem 0 2rem;
+}
+
+.story-detail__body {
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.story-detail__body p + p {
+  margin-top: 1.5rem;
+}
+
+.story-detail__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+}
+
+.story-detail__category-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  color: var(--color-primary-dark);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.stories-related {
+  padding: 3rem 0 4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.stories-related__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stories-related__header h2 {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+}
+
+.stories-related__header h2 span {
+  color: var(--color-primary);
+}
+
+.stories-page a:focus-visible,
+.stories-page button:focus-visible,
+.story-detail a:focus-visible {
+  outline: 2px solid var(--color-primary-dark);
+  outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+  .stories-header {
+    padding: 2rem 0;
+  }
+
+  .stories-form {
+    grid-template-columns: minmax(0, 1fr) 112px;
+    gap: 0.75rem;
+  }
+
+  .stories-form .adventures__search {
+    grid-column: 1 / -1;
+  }
+
+  .story-detail {
+    padding-top: 2rem;
+  }
+
+  .story-detail__image {
+    aspect-ratio: 3 / 2;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .stories-results {
+    align-items: flex-start;
+  }
+
+  .stories-page,
+  .story-detail {
+    padding-bottom: 3rem;
+  }
+
+  .story-detail__navigation {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .story-detail__meta {
+    gap: 0.75rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-card,
+  .story-card img,
+  .story-card__button {
+    transition: none;
+  }
+
+  .story-card:hover,
+  .story-card:hover img {
+    transform: none;
+  }
+}

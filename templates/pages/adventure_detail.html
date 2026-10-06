@@ -123,12 +123,12 @@
             Group size — up to {{ adventure.max_group_size }}
           </li>
         </ul>
-        <a href="#" class="btn btn-primary booking-card__cta">
+        <a href="{% url 'bookings:create' adventure.slug %}" class="btn btn-primary booking-card__cta">
           Book This Adventure
           <i data-lucide="arrow-right" aria-hidden="true"></i>
         </a>
         <p class="booking-card__note">
-          Free cancellation up to 15 days before departure.
+          Availability is confirmed by our team. No online payment is required.
         </p>
       </aside>
 

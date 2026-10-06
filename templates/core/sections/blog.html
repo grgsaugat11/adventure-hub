@@ -57,7 +57,7 @@
                         heading into the Himalayas.
                     </p>
 
-                    <a href="#" class="blog-card__link">
+                    <a href="{{ home_story_links.everest }}" class="blog-card__link">
 
                         Read Story
 
@@ -103,7 +103,7 @@
                         cafés in Nepal's adventure capital.
                     </p>
 
-                    <a href="#" class="blog-card__link">
+                    <a href="{{ home_story_links.pokhara }}" class="blog-card__link">
 
                         Read Story
 
@@ -149,7 +149,7 @@
                         make Nepal truly unforgettable.
                     </p>
 
-                    <a href="#" class="blog-card__link">
+                    <a href="{{ home_story_links.culture }}" class="blog-card__link">
 
                         Read Story
 
@@ -165,7 +165,7 @@
 
         <div class="blog-preview__footer">
 
-            <a href="#">
+            <a href="{% url 'blog:list' %}">
 
                 Explore All Stories
 
