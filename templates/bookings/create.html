@@ -20,7 +20,7 @@
         <div class="request-summary__content">
           <span class="request-summary__eyebrow">{{ adventure.region.name }}</span><h2>{{ adventure.title }}</h2>
           <dl class="summary-facts"><div><dt>Duration</dt><dd>{{ adventure.duration_days }} days</dd></div><div><dt>Group size</dt><dd>Up to {{ adventure.max_group_size }}</dd></div><div><dt>Price per person</dt><dd>{{ adventure.display_price }}</dd></div></dl>
-          <div class="summary-total"><span>Estimated total</span><strong data-booking-total>{{ adventure.display_price }}</strong></div>
+          <div class="summary-total"><span>Estimated total</span><strong data-booking-total aria-live="polite">{{ adventure.display_price }}</strong></div>
           <p class="form-help">This is a booking request, not a confirmed reservation. Our team will discuss the final arrangements and cost with you.</p>
         </div>
       </aside>
@@ -29,4 +29,4 @@
 </section>
 {% include "core/sections/footer.html" %}
 {% endblock %}
-{% block extra_js %}<script src="{% static 'js/bookings.js' %}"></script>{% endblock %}
+{% block extra_js %}<script src="{% static 'js/bookings.js' %}" defer></script>{% endblock %}

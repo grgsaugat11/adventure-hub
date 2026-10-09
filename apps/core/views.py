@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.http import Http404
 from django.shortcuts import redirect, render
@@ -88,8 +89,11 @@ def gallery(request):
     photos = GalleryPhoto.objects.filter(is_active=True)
     if category:
         photos = photos.filter(category=category)
+    page_obj = Paginator(photos, 12).get_page(request.GET.get("page"))
     return render(request, "pages/gallery.html", {
-        "photos": photos, "categories": GalleryPhoto.Category.choices, "selected_category": category,
+        "photos": page_obj.object_list, "page_obj": page_obj,
+        "categories": GalleryPhoto.Category.choices, "selected_category": category,
+        "query_string": f"category={category}" if category else "",
     })
 
 

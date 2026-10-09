@@ -82,3 +82,12 @@ class DestinationDetailPageTests(DestinationPageBase):
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse("destinations:detail", args=["does-not-exist"]))
         self.assertEqual(response.status_code, 404)
+
+    def test_destination_adventures_are_paginated_with_total_count(self):
+        for index in range(10):
+            Adventure.objects.create(title=f"Trip {index}", slug=f"trip-{index}", short_description="Trip", overview="Trip", region=self.everest, duration_days=2, price=100)
+        response = self.client.get(reverse("destinations:detail", args=["everest"]))
+        self.assertEqual(len(response.context["adventures"]), 9)
+        self.assertEqual(response.context["adventure_count"], 11)
+        response = self.client.get(reverse("destinations:detail", args=["everest"]), {"page": 2})
+        self.assertEqual(len(response.context["adventures"]), 2)

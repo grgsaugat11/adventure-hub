@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -13,8 +15,8 @@ DURATION_BUCKETS = (
 )
 
 PRICE_BUCKETS = (
-    ("budget", "Under $500"),
-    ("standard", "$500 - $1,200"),
+    ("budget", "$500 or less"),
+    ("standard", "Over $500 to $1,200"),
     ("premium", "Over $1,200"),
 )
 
@@ -30,7 +32,7 @@ def duration_bucket_for(days: int) -> str:
 
 def price_bucket_for(price) -> str:
     """Map a price to its filter bucket."""
-    price = float(price)
+    price = Decimal(str(price))
     if price <= 500:
         return "budget"
     if price <= 1200:
@@ -159,4 +161,4 @@ class Adventure(models.Model):
 
     @property
     def display_price(self) -> str:
-        return f"{self.currency} {self.price:,.0f}"
+        return f"{self.currency} {self.price:,.2f}"

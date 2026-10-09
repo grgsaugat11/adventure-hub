@@ -51,7 +51,7 @@
 }
 
 .cta__title span {
-  color: var(--color-primary);
+  color: var(--color-primary-light);
 }
 
 .cta__description {

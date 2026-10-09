@@ -1,0 +1,25 @@
+{% load static %}
+{% if request.resolver_match.view_name == 'core:home' %}
+<link rel="stylesheet" href="{% static 'css/sections/hero.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/why-us.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/destinations.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/testimonials.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/cta.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/blog.css' %}" />
+<link rel="stylesheet" href="{% static 'css/sections/faq.css' %}" />
+{% elif request.resolver_match.app_name == 'destinations' %}
+<link rel="stylesheet" href="{% static 'css/pages/destinations.css' %}" />
+{% elif request.resolver_match.app_name == 'blog' %}
+<link rel="stylesheet" href="{% static 'css/pages/blog.css' %}" />
+{% elif request.resolver_match.view_name == 'core:about' %}
+<link rel="stylesheet" href="{% static 'css/pages/about.css' %}" />
+{% endif %}
+{% if request.resolver_match.app_name == 'accounts' or request.resolver_match.app_name == 'bookings' %}
+<link rel="stylesheet" href="{% static 'css/pages/accounts.css' %}" />
+{% endif %}
+{% if request.resolver_match.app_name == 'bookings' %}
+<link rel="stylesheet" href="{% static 'css/pages/bookings.css' %}" />
+{% endif %}
+{% if request.resolver_match.app_name == 'core' and request.resolver_match.url_name != 'home' %}
+<link rel="stylesheet" href="{% static 'css/pages/support.css' %}" />
+{% endif %}

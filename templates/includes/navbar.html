@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" aria-label="Primary navigation">
   <div class="container navbar__container">
     <a href="{% url 'core:home' %}" class="navbar__brand">
       <i class="brand-icon" data-lucide="mountain-snow"></i>
@@ -8,23 +8,23 @@
       </div>
     </a>
     <ul class="navbar__links">
-      <li><a href="{% url 'core:home' %}">Home</a></li>
-      <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
-      <li><a href="{% url 'destinations:list' %}">Destinations</a></li>
+      <li><a href="{% url 'core:home' %}"{% if request.resolver_match.view_name == 'core:home' %} aria-current="page"{% endif %}>Home</a></li>
+      <li><a href="{% url 'adventures:list' %}"{% if request.resolver_match.app_name == 'adventures' %} aria-current="page"{% endif %}>Adventures</a></li>
+      <li><a href="{% url 'destinations:list' %}"{% if request.resolver_match.app_name == 'destinations' %} aria-current="page"{% endif %}>Destinations</a></li>
       <li><a href="{% url 'blog:list' %}"{% if request.resolver_match.app_name == 'blog' %} aria-current="page"{% endif %}>Blog</a></li>
       <li><a href="{% url 'core:about' %}"{% if request.resolver_match.url_name == 'about' %} aria-current="page"{% endif %}>About</a></li>
     </ul>
     <div class="navbar__actions">
       {% if user.is_authenticated %}<a href="{% url 'accounts:profile' %}" class="navbar__login">My Account</a>{% else %}<a href="{% url 'accounts:login' %}" class="navbar__login">Login</a>{% endif %}
       <a href="{% url 'adventures:list' %}" class="btn btn-primary"> Start Exploring </a>
-      <button class="nav-toggle" aria-label="Open navigation">
+      <button type="button" class="nav-toggle" aria-label="Open navigation" aria-controls="mobile-navigation" aria-expanded="false">
         <i data-lucide="menu"></i>
       </button>
     </div>
   </div>
 </nav>
 
-<div class="mobile-menu">
+<div class="mobile-menu" id="mobile-navigation" aria-label="Mobile navigation" inert>
   <div class="mobile-menu__header">
     <a href="{% url 'core:home' %}" class="navbar__brand">
       <i class="brand-icon" data-lucide="mountain-snow"></i>
@@ -36,15 +36,15 @@
       </div>
     </a>
 
-    <button class="mobile-menu__close" aria-label="Close menu">
+    <button type="button" class="mobile-menu__close" aria-label="Close menu">
       <i data-lucide="x"></i>
     </button>
   </div>
 
   <ul class="mobile-menu__links">
-    <li><a href="{% url 'core:home' %}">Home</a></li>
-    <li><a href="{% url 'adventures:list' %}">Adventures</a></li>
-    <li><a href="{% url 'destinations:list' %}">Destinations</a></li>
+    <li><a href="{% url 'core:home' %}"{% if request.resolver_match.view_name == 'core:home' %} aria-current="page"{% endif %}>Home</a></li>
+    <li><a href="{% url 'adventures:list' %}"{% if request.resolver_match.app_name == 'adventures' %} aria-current="page"{% endif %}>Adventures</a></li>
+    <li><a href="{% url 'destinations:list' %}"{% if request.resolver_match.app_name == 'destinations' %} aria-current="page"{% endif %}>Destinations</a></li>
     <li><a href="{% url 'blog:list' %}"{% if request.resolver_match.app_name == 'blog' %} aria-current="page"{% endif %}>Blog</a></li>
     <li><a href="{% url 'core:about' %}"{% if request.resolver_match.url_name == 'about' %} aria-current="page"{% endif %}>About</a></li>
   </ul>

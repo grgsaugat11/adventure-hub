@@ -1,4 +1,6 @@
-from django.test import TestCase
+from django.test import Client, TestCase, override_settings
+from django.core.cache import cache
+from unittest.mock import patch
 from django.urls import reverse
 from django.core.management import call_command
 from io import StringIO
@@ -48,6 +50,7 @@ class HomePageTests(TestCase):
         self.assertContains(response, reverse("destinations:detail", args=["everest"]))
 
 
+@override_settings(SUBMISSION_RATE_LIMITS={})
 class SupportPageTests(TestCase):
     def test_contact_message_is_stored_and_refresh_does_not_resubmit(self):
         response = self.client.post(reverse("core:contact"), {
@@ -100,3 +103,71 @@ class SupportPageTests(TestCase):
         Post.objects.filter(pk=post.pk).update(is_published=False)
         response = self.client.get(reverse("core:home"))
         self.assertEqual(response.context["home_story_links"]["everest"], reverse("blog:list"))
+
+    def test_gallery_pagination_preserves_category(self):
+        for index in range(13):
+            GalleryPhoto.objects.create(title=f"Mountain {index}", slug=f"mountain-{index}", category="mountains")
+        GalleryPhoto.objects.create(title="Lake", slug="lake", category="lakes")
+        response = self.client.get(reverse("core:gallery"), {"category": "mountains"})
+        self.assertEqual(len(response.context["photos"]), 12)
+        self.assertContains(response, "category=mountains&amp;page=2")
+        response = self.client.get(reverse("core:gallery"), {"category": "mountains", "page": 2})
+        self.assertEqual(len(response.context["photos"]), 1)
+        self.assertEqual(response.context["page_obj"].paginator.count, 13)
+
+
+@override_settings(SUBMISSION_RATE_LIMITS={"core:contact": (2, 60), "accounts:login": (2, 60)})
+class SubmissionThrottleTests(TestCase):
+    def setUp(self):
+        cache.clear()
+        self.addCleanup(cache.clear)
+        self.data = {"name": "Traveller", "email": "traveller@example.com", "topic": "planning", "message": "Help me plan a journey."}
+
+    @patch("apps.core.middleware.time.time", return_value=120)
+    def test_throttle_prevents_extra_writes_and_returns_retry_after(self, clock):
+        url = reverse("core:contact")
+        self.assertEqual(self.client.post(url, self.data).status_code, 302)
+        self.assertEqual(self.client.post(url, self.data).status_code, 302)
+        response = self.client.post(url, self.data)
+        self.assertEqual(response.status_code, 429)
+        self.assertEqual(response["Retry-After"], "60")
+        self.assertEqual(response["Cache-Control"], "no-store")
+        self.assertEqual(ContactMessage.objects.count(), 2)
+        self.assertContains(response, "Please pause", status_code=429)
+
+    @patch("apps.core.middleware.time.time", return_value=120)
+    def test_limits_expire_and_ips_and_routes_are_independent(self, clock):
+        url = reverse("core:contact")
+        for _ in range(2):
+            self.client.post(url, self.data)
+        self.assertEqual(self.client.post(url, self.data).status_code, 429)
+        self.assertEqual(self.client.post(url, self.data, REMOTE_ADDR="192.0.2.2").status_code, 302)
+        self.assertEqual(self.client.post(reverse("accounts:login"), {}).status_code, 200)
+        self.assertEqual(self.client.get(url).status_code, 200)
+        clock.return_value = 180
+        self.assertEqual(self.client.post(url, self.data).status_code, 302)
+
+    def test_forwarded_ip_header_does_not_bypass_limits(self):
+        for _ in range(2):
+            self.client.post(reverse("core:contact"), self.data)
+        response = self.client.post(reverse("core:contact"), self.data, HTTP_X_FORWARDED_FOR="192.0.2.3")
+        self.assertEqual(response.status_code, 429)
+
+    def test_csrf_rejection_still_prevents_storage(self):
+        response = Client(enforce_csrf_checks=True).post(reverse("core:contact"), self.data)
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(ContactMessage.objects.exists())
+
+
+class ErrorPageTests(TestCase):
+    @override_settings(DEBUG=False)
+    def test_missing_page_uses_branded_error_template(self):
+        response = self.client.get("/no-such-trail/")
+        self.assertContains(response, "This trail doesn't lead anywhere", status_code=404)
+        self.assertTemplateUsed(response, "404.html")
+
+    def test_server_error_template_renders_without_request_context(self):
+        from django.template.loader import render_to_string
+        html = render_to_string("500.html")
+        self.assertIn("A small detour", html)
+        self.assertNotIn("Traceback", html)

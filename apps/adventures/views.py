@@ -20,9 +20,6 @@ from .models import (
 # Every filter group resolved by _apply_facet.
 FACETS = ("q", "region", "difficulty", "activity", "duration", "price")
 
-# Facet groups that map to dedicated rows in the DB.
-ROW_FACETS = ("region", "activity")
-
 
 class AdventureListView(ListView):
     model = Adventure
@@ -71,7 +68,8 @@ class AdventureListView(ListView):
             if name == exclude:
                 continue
             queryset = self._apply_facet(queryset, name, params.get(name))
-        return queryset.distinct()
+        # DISTINCT must not pull default ordering columns into facet groups.
+        return queryset.order_by().distinct()
 
     def get_queryset(self):
         params = self.request.GET
@@ -82,7 +80,7 @@ class AdventureListView(ListView):
         )
         for name in FACETS:
             queryset = self._apply_facet(queryset, name, params.get(name))
-        return apply_sort(queryset, params.get("sort"))
+        return apply_sort(queryset.distinct(), params.get("sort"))
 
     # -----------------------------------------------------
     # Context
@@ -150,17 +148,16 @@ class AdventureListView(ListView):
         # Facet options that belong to DB rows share one structure.
         region_rows = self._facet_base("region").values(
             "region_id", "region__slug", "region__name"
-        ).annotate(count=Count("id")).order_by("region__name")
-        activity_rows = self._facet_base("activity").values(
+        ).annotate(count=Count("id", distinct=True)).order_by("region__name")
+        activity_rows = self._facet_base("activity").filter(activities__isnull=False).values(
             "activities__id", "activities__slug", "activities__name"
-        ).annotate(count=Count("id")).order_by("activities__name")
+        ).annotate(count=Count("id", distinct=True)).order_by("activities__name")
 
-        base = self._facet_base(None)
-        duration_counts = duration_bucket_counts(base)
-        price_counts = price_bucket_counts(base)
+        duration_counts = duration_bucket_counts(self._facet_base("duration"))
+        price_counts = price_bucket_counts(self._facet_base("price"))
         difficulty_counts = {
             item["difficulty"]: item["count"]
-            for item in base.values("difficulty").annotate(count=Count("id"))
+            for item in self._facet_base("difficulty").values("difficulty").annotate(count=Count("id", distinct=True))
         }
 
         params = self.request.GET

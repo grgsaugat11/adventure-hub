@@ -27,6 +27,10 @@
 .request-notes { border-top: 1px solid rgba(0, 0, 0, 0.07); margin-top: 1.5rem; padding-top: 1.5rem; overflow-wrap: anywhere; }
 .request-notes h3 { font-size: 1rem; margin-bottom: 0.75rem; }
 .request-notes p + p { margin-top: 0.75rem; }
+.booking-filters { display: flex; flex-wrap: wrap; gap: 0.625rem; margin: 0 0 1.75rem; }
+.booking-filters a { display: inline-flex; gap: 0.5rem; align-items: center; min-height: 44px; padding: 0.625rem 0.875rem; color: var(--color-text); border: 1px solid #d8dfd6; border-radius: var(--radius-md); font-size: 0.875rem; }
+.booking-filters a[aria-current="page"] { background: var(--color-primary); border-color: var(--color-primary); color: white; }
+.booking-filters span { font-size: 0.75rem; font-weight: 700; }
 .booking-list { display: grid; gap: 1.5rem; }
 .booking-row { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; align-items: center; gap: 1.5rem; padding: 1.5rem; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: var(--radius-lg); }
 .booking-row__image { display: flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background: var(--color-surface); }

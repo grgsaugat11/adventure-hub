@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import signing
 from django.core.paginator import Paginator
+from django.db.models import Count
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
@@ -55,7 +57,20 @@ def create(request, slug):
 @login_required
 def booking_list(request):
     bookings = BookingRequest.objects.filter(user=request.user).select_related("adventure", "adventure__region")
-    return render(request, "bookings/list.html", {"page_obj": Paginator(bookings, 6).get_page(request.GET.get("page"))})
+    status = request.GET.get("status", "")
+    if status and status not in BookingRequest.Status.values:
+        raise Http404("Unknown booking status")
+    counts = dict(bookings.order_by().values("status").annotate(count=Count("pk")).values_list("status", "count"))
+    total_count = sum(counts.values())
+    if status:
+        bookings = bookings.filter(status=status)
+    return render(request, "bookings/list.html", {
+        "page_obj": Paginator(bookings, 6).get_page(request.GET.get("page")),
+        "selected_status": status, "total_count": total_count,
+        "status_filters": [{"value": value, "label": label, "count": counts.get(value, 0)}
+                           for value, label in BookingRequest.Status.choices],
+        "query_string": f"status={status}" if status else "",
+    })
 
 
 @login_required

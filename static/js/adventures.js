@@ -1,34 +1,13 @@
-const sortSelect = document.querySelector("[data-sort-select]");
-const filters = document.querySelector("#adventure-filters");
-const filtersToggle = document.querySelector("[data-filter-toggle]");
-const filtersClose = document.querySelector("[data-filter-close]");
-const filtersBackdrop = document.querySelector("[data-filter-backdrop]");
-
-function openFilters() {
-  filters.classList.add("is-open");
-  filtersBackdrop.classList.add("is-visible");
-  document.body.style.overflow = "hidden";
-}
-
-function closeFilters() {
-  filters.classList.remove("is-open");
-  filtersBackdrop.classList.remove("is-visible");
-  document.body.style.overflow = "";
-}
-
-if (sortSelect) {
-  sortSelect.addEventListener("change", () => {
-    sortSelect.form?.submit();
+(() => {
+  const sortSelect = document.querySelector("[data-sort-select]");
+  sortSelect?.addEventListener("change", () => sortSelect.form?.requestSubmit());
+  window.AdventureUI?.drawer({
+    panel: document.querySelector("#adventure-filters"),
+    trigger: document.querySelector("[data-filter-toggle]"),
+    closeButton: document.querySelector("[data-filter-close]"),
+    backdrop: document.querySelector("[data-filter-backdrop]"),
+    panelClass: "is-open",
+    backdropClass: "is-visible",
+    breakpoint: "(max-width: 992px)",
   });
-}
-
-if (filtersToggle && filters) {
-  filtersToggle.addEventListener("click", openFilters);
-  filtersClose?.addEventListener("click", closeFilters);
-  filtersBackdrop?.addEventListener("click", closeFilters);
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeFilters();
-    }
-  });
-}
+})();

@@ -81,7 +81,7 @@
       <div class="detail-overview">
         <span class="section-badge">About this adventure</span>
         <h2 class="detail-overview__title">The Experience</h2>
-        <p class="detail-overview__text">{{ adventure.overview }}</p>
+        <div class="detail-overview__text">{{ adventure.overview|linebreaks }}</div>
 
         {% if adventure.activities.count %}
         <div class="detail-activities">
@@ -160,5 +160,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/adventures.js' %}"></script>
+<script src="{% static 'js/adventures.js' %}" defer></script>
 {% endblock %}

@@ -11,6 +11,7 @@
       <figure class="gallery-photo"><button type="button" data-gallery-photo data-src="{{ photo.image_url }}" data-alt="{{ photo.image_alt|default:photo.title }}" data-title="{{ photo.title }}" data-caption="{{ photo.caption }}" aria-label="View photo: {{ photo.title }}"><img src="{{ photo.image_url }}" alt="{{ photo.image_alt|default:photo.title }}" loading="lazy" /><span class="gallery-photo__zoom"><i data-lucide="expand" aria-hidden="true"></i></span></button><figcaption><span>{{ photo.get_category_display }}</span><h2>{{ photo.title }}</h2>{% if photo.caption %}<p>{{ photo.caption }}</p>{% endif %}</figcaption></figure>
       {% empty %}<div class="workspace-empty"><i data-lucide="image" aria-hidden="true"></i><h2>More photos are on the way</h2><p>Explore the rest of the gallery or discover Nepal's destinations.</p><a href="{% url 'destinations:list' %}" class="btn btn-primary">Explore Destinations</a></div>{% endfor %}
     </div>
+    {% include "includes/pagination.html" %}
   </div>
 </section>
 <dialog class="gallery-dialog" aria-label="Photo viewer" data-gallery-dialog>
@@ -20,4 +21,4 @@
 </dialog>
 {% include "core/sections/footer.html" %}
 {% endblock %}
-{% block extra_js %}<script src="{% static 'js/gallery.js' %}"></script>{% endblock %}
+{% block extra_js %}<script src="{% static 'js/gallery.js' %}" defer></script>{% endblock %}

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, render
 
@@ -30,14 +31,16 @@ def region_detail(request, slug):
         )
         .select_related("region")
         .prefetch_related("activities")
-        .order_by("-rating", "-featured", "title")
+        .order_by("-rating", "-featured", "title", "pk")
     )
+    page_obj = Paginator(adventures, 9).get_page(request.GET.get("page"))
     return render(
         request,
         "pages/destination_detail.html",
         {
             "region": region,
-            "adventures": adventures,
-            "adventure_count": adventures.count(),
+            "adventures": page_obj.object_list,
+            "page_obj": page_obj,
+            "adventure_count": page_obj.paginator.count,
         },
     )

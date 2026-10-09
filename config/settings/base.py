@@ -14,7 +14,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 # ===========================================
 
 from pathlib import Path
-from decouple import config
+from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -29,7 +29,8 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
 
 
 # ===========================================
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'apps.core.middleware.SubmissionThrottleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -178,6 +180,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -193,3 +196,20 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / "media"
+
+# The default cache is process-local. Deployments should use a shared backend
+# or enforce equivalent limits at the reverse proxy (see README).
+CACHES = {
+    "default": {
+        "BACKEND": config("CACHE_BACKEND", default="django.core.cache.backends.locmem.LocMemCache"),
+        "LOCATION": config("CACHE_LOCATION", default="adventure-nepal"),
+    }
+}
+SUBMISSION_RATE_LIMITS = {
+    "accounts:login": (10, 300),
+    "admin:login": (10, 300),
+    "accounts:signup": (5, 600),
+    "accounts:password_reset": (5, 600),
+    "core:contact": (5, 600),
+    "bookings:create": (20, 300),
+}

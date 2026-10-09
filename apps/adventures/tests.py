@@ -1,7 +1,13 @@
-from django.test import TestCase
+from decimal import Decimal
+from io import StringIO
+from tempfile import TemporaryDirectory
+
+from django.core.management import call_command
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Activity, Adventure, Region
+from .filters import apply_price_filter, apply_sort, price_bucket_counts
 
 
 class AdventureCatalogBase(TestCase):
@@ -142,3 +148,80 @@ class AdventureDetailViewTests(AdventureCatalogBase):
     def test_unknown_slug_returns_404(self):
         response = self.client.get(reverse("adventures:detail", args=["does-not-exist"]))
         self.assertEqual(response.status_code, 404)
+
+
+class CatalogRegressionTests(AdventureCatalogBase):
+    def test_price_buckets_are_disjoint_and_match_counts_and_labels(self):
+        prices = ("499.99", "500.00", "500.01", "1200.00", "1200.01")
+        expected = ("budget", "budget", "standard", "standard", "premium")
+        records = []
+        for index, price in enumerate(prices):
+            records.append(Adventure.objects.create(title=f"Boundary {index}", slug=f"boundary-{index}", short_description="Boundary", overview="Boundary", region=self.everest, duration_days=1, price=price))
+        queryset = Adventure.objects.filter(pk__in=[record.pk for record in records])
+        self.assertEqual(price_bucket_counts(queryset.distinct()), {"budget": 2, "standard": 2, "premium": 1})
+        for record, bucket in zip(records, expected):
+            record.price = Decimal(record.price)
+            self.assertEqual(record.price_bucket, bucket)
+            for other in ("budget", "standard", "premium"):
+                self.assertEqual(apply_price_filter(queryset, other).filter(pk=record.pk).exists(), bucket == other)
+
+    def test_selected_facets_keep_other_options_available(self):
+        for query, group, other in (({"difficulty": "easy"}, "difficulties", "challenging"), ({"duration": "short"}, "durations", "long"), ({"price": "budget"}, "prices", "premium")):
+            with self.subTest(query=query):
+                response = self.client.get(reverse("adventures:list"), query)
+                counts = {option["key"]: option["count"] for option in response.context[group]}
+                self.assertEqual(counts[other], 1)
+
+    def test_activity_facet_counts_and_unassigned_adventures(self):
+        self.ebc.activities.add(self.safari)
+        Adventure.objects.create(title="Unassigned", slug="unassigned", short_description="Trip", overview="Trip", region=self.everest, duration_days=2, price=100)
+        response = self.client.get(reverse("adventures:list"), {"activity": "trekking"})
+        self.assertEqual(response.context["page_obj"].paginator.count, 1)
+        counts = {option["name"]: option["count"] for option in response.context["activities"]}
+        self.assertEqual(counts, {"Jungle Safari": 2, "Trekking": 1})
+        response = self.client.get(reverse("adventures:list"))
+        self.assertTrue(all(option["name"] for option in response.context["activities"]))
+
+    def test_sort_has_unique_tiebreaker_and_price_keeps_cents(self):
+        self.assertEqual(apply_sort(Adventure.objects.all(), "price_low").query.order_by, ("price", "pk"))
+        self.safari_adventure.price = Decimal("125.50")
+        self.assertEqual(self.safari_adventure.display_price, "USD 125.50")
+
+    def test_facet_counts_combine_records_with_different_titles_and_ratings(self):
+        Adventure.objects.create(title="Another short trip", slug="another-short-trip", short_description="Trip", overview="Trip", region=self.annapurna, difficulty="easy", duration_days=2, price=125, rating="4.5")
+        response = self.client.get(reverse("adventures:list"))
+        for group, key in (("difficulties", "easy"), ("durations", "short"), ("prices", "budget")):
+            counts = {item["key"]: item["count"] for item in response.context[group]}
+            self.assertEqual(counts[key], 2)
+            self.assertEqual(sum(counts.values()), 3)
+
+
+class SeedAdventureTests(TestCase):
+    def test_seed_preserves_edits_archiving_images_and_activities(self):
+        with TemporaryDirectory() as media_root, override_settings(MEDIA_ROOT=media_root):
+            call_command("seed_adventures", stdout=StringIO())
+            adventure = Adventure.objects.get(slug="everest-base-camp-trek")
+            adventure.title = "An editor's title"
+            adventure.price = Decimal("1234.56")
+            adventure.is_active = False
+            adventure.image = "adventures/custom.jpg"
+            adventure.save()
+            adventure.activities.clear()
+            region = adventure.region
+            region.description = "An editor's region"
+            region.save()
+            activity = Activity.objects.get(slug="trekking")
+            activity.name = "An editor's activity"
+            activity.save()
+            call_command("seed_adventures", stdout=StringIO())
+            adventure.refresh_from_db()
+            region.refresh_from_db()
+            self.assertEqual(Adventure.objects.count(), 12)
+            self.assertEqual(adventure.title, "An editor's title")
+            self.assertEqual(adventure.price, Decimal("1234.56"))
+            self.assertFalse(adventure.is_active)
+            self.assertEqual(adventure.image.name, "adventures/custom.jpg")
+            self.assertEqual(adventure.activities.count(), 0)
+            self.assertEqual(region.description, "An editor's region")
+            activity.refresh_from_db()
+            self.assertEqual(activity.name, "An editor's activity")

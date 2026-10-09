@@ -5,7 +5,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Adventure Travel{% endblock %}</title>
+    <title>{% block title %}Adventure Nepal | Explore Beyond{% endblock %}</title>
+    <meta name="description" content="{% block description %}Explore Nepal's treks, wildlife, cultural journeys and destinations. Plan your next adventure with Adventure Nepal.{% endblock %}" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,24 +23,29 @@
     />
 
     <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/components.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/sections/featured.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/sections/footer.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages/adventures.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages/forms.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    {% include "includes/page_styles.html" %}
+    <link rel="stylesheet" href="{% static 'css/responsive/tablet.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/responsive/mobile.css' %}" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     {% include "includes/navbar.html" %}
 
-    <main>{% block content %} {% endblock %}</main>
+    <main id="main-content" tabindex="-1">{% block content %} {% endblock %}</main>
 
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/home.js' %}"></script>
-    <script src="{% static 'js/blog.js' %}"></script>
-    <script src="{% static 'js/faq.js' %}"></script>
-    <script src="{% static 'js/navbar.js' %}"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+    <script src="{% static 'js/navbar.js' %}" defer></script>
 
     {% block extra_js %}{% endblock %}
 
-    <script>
-      lucide.createIcons();
-    </script>
   </body>
 </html>

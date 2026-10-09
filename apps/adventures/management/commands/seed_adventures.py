@@ -4,6 +4,7 @@ from pathlib import Path
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db import transaction
+from django.utils.text import slugify
 
 from apps.adventures.models import Activity, Adventure, Region
 
@@ -300,13 +301,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         activity_map = {}
         for name in ACTIVITIES:
-            activity, _ = Activity.objects.update_or_create(name=name)
-            activity_map[activity.slug] = activity
+            slug = slugify(name)
+            activity, _ = Activity.objects.get_or_create(slug=slug, defaults={"name": name})
+            activity_map[slug] = activity
 
         region_map = {}
         for slug, name, desc, order, source in REGIONS:
-            image = self._copy_image(source, slug, subdir="destinations")
-            region, _ = Region.objects.update_or_create(
+            existing = Region.objects.filter(slug=slug).first()
+            image = "" if existing else self._copy_image(source, slug, subdir="destinations")
+            region, _ = Region.objects.get_or_create(
                 slug=slug,
                 defaults={
                     "name": name,
@@ -321,9 +324,10 @@ class Command(BaseCommand):
         for item in ADVENTURES:
             activity_slugs = item["activities"]
             slug = item["slug"]
-            image = self._copy_image(item["image"], slug)
+            existing = Adventure.objects.filter(slug=slug).first()
+            image = "" if existing else self._copy_image(item["image"], slug)
 
-            adventure, created = Adventure.objects.update_or_create(
+            adventure, created = Adventure.objects.get_or_create(
                 slug=slug,
                 defaults={
                     "title": item["title"],
@@ -342,8 +346,9 @@ class Command(BaseCommand):
                     "is_active": True,
                 },
             )
-            adventure.activities.set([activity_map[s] for s in activity_slugs])
-            status = "created" if created else "updated"
+            if created:
+                adventure.activities.set([activity_map[s] for s in activity_slugs])
+            status = "created" if created else "preserved"
             self.stdout.write(self.style.SUCCESS(f"  {status}: {adventure.title}"))
 
         self.stdout.write(

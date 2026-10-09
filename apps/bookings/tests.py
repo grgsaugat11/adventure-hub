@@ -2,7 +2,7 @@ from datetime import timedelta
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
-from django.test import Client, TestCase
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
@@ -13,6 +13,7 @@ from .models import BookingRequest
 User = get_user_model()
 
 
+@override_settings(SUBMISSION_RATE_LIMITS={})
 class BookingTests(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -162,3 +163,30 @@ class BookingTests(TestCase):
         self.assertEqual(pending.status, BookingRequest.Status.CONFIRMED)
         self.assertEqual(cancelled.status, BookingRequest.Status.CANCELLED)
         self.assertEqual(past.status, BookingRequest.Status.PENDING)
+
+    def test_status_filters_and_counts_only_include_owned_requests(self):
+        pending = self.make_booking()
+        self.make_booking(status=BookingRequest.Status.CONFIRMED)
+        foreign = self.make_booking(status=BookingRequest.Status.CONFIRMED)
+        foreign.user = self.other
+        foreign.save()
+        response = self.client.get(reverse("bookings:list"), {"status": "pending"})
+        self.assertEqual(list(response.context["page_obj"]), [pending])
+        counts = {item["value"]: item["count"] for item in response.context["status_filters"]}
+        self.assertEqual(counts["pending"], 1)
+        self.assertEqual(counts["confirmed"], 1)
+        self.assertEqual(response.context["total_count"], 2)
+
+    def test_booking_pagination_preserves_status_filter(self):
+        for _ in range(7):
+            self.make_booking(status=BookingRequest.Status.CONFIRMED)
+        response = self.client.get(reverse("bookings:list"), {"status": "confirmed"})
+        self.assertContains(response, "status=confirmed&amp;page=2")
+        response = self.client.get(reverse("bookings:list"), {"status": "confirmed", "page": 2})
+        self.assertEqual(len(response.context["page_obj"]), 1)
+
+    def test_invalid_status_and_filtered_empty_state(self):
+        self.assertEqual(self.client.get(reverse("bookings:list"), {"status": "forged"}).status_code, 404)
+        self.make_booking()
+        response = self.client.get(reverse("bookings:list"), {"status": "confirmed"})
+        self.assertContains(response, "No requests with this status")

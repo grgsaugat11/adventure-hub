@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -20,4 +21,9 @@
 
     {% include "core/sections/footer.html" %}
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}" defer></script>
+<script src="{% static 'js/faq.js' %}" defer></script>
 {% endblock %}

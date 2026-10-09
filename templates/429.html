@@ -1,0 +1,5 @@
+{% extends "errors/base.html" %}
+{% block error_title %}Please try again shortly{% endblock %}
+{% block error_code %}429{% endblock %}
+{% block error_heading %}Please pause before trying again{% endblock %}
+{% block error_message %}Too many requests were submitted in a short time. Wait {{ retry_after }} seconds, then return to the form and try again.{% endblock %}

@@ -10,6 +10,7 @@ User = get_user_model()
 PASSWORD = "Forest-River-Blue!2026"
 
 
+@override_settings(SUBMISSION_RATE_LIMITS={})
 class AccountTests(TestCase):
     @classmethod
     def setUpTestData(cls):

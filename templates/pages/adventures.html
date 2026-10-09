@@ -106,6 +106,7 @@
               <option value="price_high" {% if request.GET.sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
               <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Newest First</option>
             </select>
+            <button type="submit" class="btn btn-primary">Search</button>
           </form>
 
           <p class="adventures__count" data-results-count>
@@ -116,7 +117,7 @@
             experiences
           </p>
 
-          <button type="button" class="btn btn-outline adventures__filters-toggle" data-filter-toggle>
+          <button type="button" class="btn btn-outline adventures__filters-toggle" data-filter-toggle aria-controls="adventure-filters" aria-expanded="false">
             <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
             Filters
           </button>
@@ -185,5 +186,5 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/adventures.js' %}"></script>
+<script src="{% static 'js/adventures.js' %}" defer></script>
 {% endblock %}

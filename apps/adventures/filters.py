@@ -24,9 +24,9 @@ def apply_price_filter(queryset, bucket):
     if bucket == "budget":
         return queryset.filter(price__lte=500)
     if bucket == "standard":
-        return queryset.filter(price__gte=500, price__lte=1200)
+        return queryset.filter(price__gt=500, price__lte=1200)
     if bucket == "premium":
-        return queryset.filter(price__gte=1200)
+        return queryset.filter(price__gt=1200)
     return queryset
 
 
@@ -40,7 +40,7 @@ def apply_sort(queryset, sort):
         "price_high": ("-price",),
     }
     ordering = sorts.get(sort or "recommended", sorts["recommended"])
-    return queryset.order_by(*ordering)
+    return queryset.order_by(*ordering, "pk")
 
 
 # Computed SQL buckets so facet counts stay on the database side.
@@ -62,9 +62,9 @@ _PRICE_CASE = Case(
 def duration_bucket_counts(queryset):
     """{bucket_key: count} for a queryset, grouped via SQL CASE."""
     return dict(
-        queryset.annotate(bucket=_DURATION_CASE)
+        queryset.order_by().annotate(bucket=_DURATION_CASE)
         .values("bucket")
-        .annotate(count=Count("id"))
+        .annotate(count=Count("id", distinct=True))
         .values_list("bucket", "count")
     )
 
@@ -72,8 +72,8 @@ def duration_bucket_counts(queryset):
 def price_bucket_counts(queryset):
     """{bucket_key: count} for a queryset, grouped via SQL CASE."""
     return dict(
-        queryset.annotate(bucket=_PRICE_CASE)
+        queryset.order_by().annotate(bucket=_PRICE_CASE)
         .values("bucket")
-        .annotate(count=Count("id"))
+        .annotate(count=Count("id", distinct=True))
         .values_list("bucket", "count")
     )

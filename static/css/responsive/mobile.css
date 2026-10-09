@@ -1,0 +1,14 @@
+@media (max-width: 576px) {
+  .container { width: calc(100% - 2rem); }
+  .brand-title { font-size: 1.125rem; }
+  .brand-tagline { font-size: 0.625rem; }
+  .navbar__brand { gap: 0.625rem; }
+  .brand-icon { width: 28px; height: 28px; }
+  .adventures__search { flex-basis: 100%; }
+  .adventures__sort { flex: 1; min-width: 0; }
+  .section-header { margin-bottom: 2.5rem; }
+  .section-title { font-size: clamp(1.875rem, 8vw, 2.5rem); line-height: 1.2; }
+  .adventure-card__meta, .booking-card__price { flex-wrap: wrap; }
+  .detail-hero__card { height: auto; min-height: 440px; }
+  .detail-hero__content { position: relative; padding-top: 5rem; }
+}

@@ -51,7 +51,7 @@
 
   height: 30px;
 
-  color: var(--color-primary);
+  color: var(--color-primary-light);
 }
 
 .footer__brand p {
@@ -87,7 +87,7 @@
 }
 
 .footer__column a:hover {
-  color: var(--color-primary);
+  color: var(--color-primary-light);
 
   padding-left: 6px;
 }
@@ -107,8 +107,11 @@
 
   height: 18px;
 
-  color: var(--color-primary);
+  color: var(--color-primary-light);
 }
+
+.footer .brand-tagline { color: rgba(255, 255, 255, 0.72); }
+.footer :focus-visible { outline-color: var(--color-primary-light); }
 
 .footer__bottom {
   display: flex;

@@ -44,7 +44,7 @@
 
 .featured__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 2rem;
 }
 
@@ -76,9 +76,7 @@
   display: flex;
   transform: scale(0.95);
   opacity: 0.5;
-  transition:
-    transform 0.55s ease,
-    opacity 0.55s ease;
+  transition: transform 0.55s ease;
 }
 
 .featured__slide.is-active {
@@ -154,12 +152,12 @@
 }
 
 .featured__dot {
-  width: 8px;
-  height: 8px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: none;
   border-radius: 999px;
-  background: rgba(81, 91, 58, 0.25);
+  background: radial-gradient(circle, rgba(81, 91, 58, 0.35) 4px, transparent 5px);
   cursor: pointer;
   transition:
     width 0.3s ease,
@@ -167,8 +165,7 @@
 }
 
 .featured__dot.is-active {
-  width: 26px;
-  background: var(--color-primary);
+  background: radial-gradient(circle, var(--color-primary) 6px, transparent 7px);
 }
 
 .featured__dot:focus-visible {
@@ -182,12 +179,16 @@
 
 .adventure-card {
   background: #fff;
+  border: 1px solid #e4e9e1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
 
   overflow: hidden;
 
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--card-shadow);
 
   transition:
     transform 0.35s ease,
@@ -195,15 +196,16 @@
 }
 
 .adventure-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-4px);
 
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--card-shadow-hover);
 }
 
 .adventure-card__image {
   position: relative;
 
   height: 240px;
+  flex-shrink: 0;
 
   overflow: hidden;
 }
@@ -237,6 +239,7 @@
 }
 
 .adventure-card__badges span {
+  color: var(--color-text);
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   padding: 0.45rem 0.8rem;
@@ -250,6 +253,9 @@
 
 .adventure-card__content {
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .adventure-card__content h3 {
@@ -272,7 +278,12 @@
   justify-content: space-between;
 
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: auto;
 }
+
+.featured__nav[hidden], .featured__dots[hidden] { display: none; }
 
 .price strong {
   color: var(--color-primary);

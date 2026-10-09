@@ -32,6 +32,13 @@
   justify-content: center;
 }
 
+.testimonial__avatar {
+  display: grid; place-items: center; width: 180px; height: 180px;
+  border-radius: 50%; background: #e5eee1; color: var(--color-primary-dark);
+  font-family: var(--font-heading); font-size: 3rem; font-weight: 600;
+  border: 6px solid white; box-shadow: var(--card-shadow);
+}
+
 .testimonial__image img {
   width: 260px;
 
