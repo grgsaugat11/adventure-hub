@@ -1,5 +1,5 @@
 (() => {
-  if (window.lucide) window.lucide.createIcons();
+  window.AdventureIcons?.render();
 
   // Shared keyboard behavior for the navigation and catalog filter drawers.
   window.AdventureUI = {

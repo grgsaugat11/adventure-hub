@@ -35,11 +35,15 @@ class SignupForm(StyledFormMixin, UniqueEmailMixin, UserCreationForm):
 
 
 class ProfileForm(StyledFormMixin, UniqueEmailMixin, forms.ModelForm):
-    email = forms.EmailField(max_length=254)
+    email = forms.EmailField(max_length=254, widget=forms.EmailInput(attrs={"autocomplete": "email"}))
 
     class Meta:
         model = User
         fields = ("first_name", "last_name", "email")
+        widgets = {
+            "first_name": forms.TextInput(attrs={"autocomplete": "given-name"}),
+            "last_name": forms.TextInput(attrs={"autocomplete": "family-name"}),
+        }
 
 
 class LoginForm(StyledFormMixin, AuthenticationForm):

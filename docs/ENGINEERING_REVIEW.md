@@ -158,3 +158,24 @@ uploaded media, private `.env`, and existing Word report were not edited.
    Safari/Firefox, and manual screen-reader testing remain unverified.
 
 See `README.md` for setup, operational commands, configuration, and next steps.
+
+## Follow-up — icon reliability and account dashboard
+
+- Reproduced missing interface icons across six pages when the Lucide CDN was
+  blocked. Existing icon markup was intact; the external download was a single
+  point of failure and initialization silently skipped unavailable Lucide.
+- Replaced the external Lucide download with a local, licensed icon subset in
+  `static/js/icons.js`, preserving existing shapes, classes, and accessibility
+  attributes.
+- Redesigned the profile with a landscape welcome header, initials avatar,
+  account identity, a two-column personal-details form, booking overview links,
+  next confirmed trip/empty state, and integrated security actions.
+- Dashboard queries only include the authenticated user's requests. Upcoming
+  totals and the next-trip card exclude past, pending, declined, and cancelled
+  requests. Invalid submissions retain saved identity details in the dashboard.
+- Added profile regression coverage for ownership-scoped totals, earliest future
+  confirmed trips, empty state, and invalid-submission identity handling.
+- Follow-up verification: all 85 Django tests passed. Public/authenticated browser
+  checks covered 84 page/viewport combinations with the Lucide CDN blocked and
+  asserted no unrendered interface icons. Profile editing, booking actions, and
+  logout passed; checked mobile/desktop pages had no automated WCAG violations.

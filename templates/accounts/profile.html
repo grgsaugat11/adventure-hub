@@ -1,21 +1,111 @@
 {% extends "base.html" %}
 {% block title %}My Account | Adventure Nepal{% endblock %}
 {% block content %}
-<section class="workspace-page">
+<section class="workspace-page profile-page">
   <div class="container">
-    <header class="workspace-header"><span class="section-badge">Your Adventure Nepal</span><h1>My Account</h1><p>Update your details and manage your journeys.</p></header>
-    {% include "accounts/includes/account_nav.html" %}
+    <header class="profile-header">
+      <div>
+        <p class="profile-eyebrow">Welcome back, {{ greeting_name }}</p>
+        <h1>My Account</h1>
+        <p class="profile-header__description">Your personal details and journeys, all in one place.</p>
+      </div>
+      <a href="{% url 'adventures:list' %}" class="btn btn-outline">Explore Adventures <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+    </header>
+
+    {% include "includes/form_messages.html" %}
+
     <div class="profile-layout">
-      <section class="form-panel">
-        <h2>Personal Details</h2><p class="panel-description">Signed in as <strong>{{ user.username }}</strong>.</p>
-        {% include "includes/form_messages.html" %}
-        <form method="post" class="site-form">{% csrf_token %}{% include "includes/form_fields.html" %}<div class="form-actions"><button type="submit" class="btn btn-primary">Save Changes</button></div></form>
-      </section>
-      <aside class="form-panel profile-security">
-        <h2>Account Security</h2><p>Keep your password up to date and sign out when you're done.</p>
-        <a href="{% url 'accounts:password_change' %}" class="btn btn-outline">Change Password</a>
-        <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button type="submit" class="btn btn-outline">Logout</button></form>
+      <aside class="profile-overview" aria-label="Your account overview">
+        <div class="profile-overview__cover" aria-hidden="true"></div>
+        <div class="profile-identity">
+          <span class="profile-avatar" aria-hidden="true">{{ profile_initials }}</span>
+          <div class="profile-identity__text">
+            <strong>{{ profile_name }}</strong>
+            <span>{{ profile_email|default:"Add your email in Personal Details" }}</span>
+          </div>
+        </div>
+        <p class="profile-overview__member"><i data-lucide="calendar" aria-hidden="true"></i>Member since {{ user.date_joined|date:"M Y" }}</p>
+        {% include "accounts/includes/account_nav.html" %}
       </aside>
+
+      <div class="profile-main">
+        <section class="form-panel profile-details" aria-labelledby="personal-details-heading">
+          <header class="profile-panel-heading">
+            <h2 id="personal-details-heading">Personal Details</h2>
+            <p>Update your name and the email address we can reach you at.</p>
+          </header>
+          <div class="profile-username"><span>Username</span><strong>{{ user.username }}</strong></div>
+          <form method="post" class="site-form profile-form">
+            {% csrf_token %}
+            {% include "includes/form_fields.html" %}
+            <div class="profile-form__footer">
+              <button type="submit" class="btn btn-primary"><i data-lucide="save" aria-hidden="true"></i>Save Changes</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="form-panel profile-journeys" aria-labelledby="journeys-heading">
+          <header class="profile-journeys__header">
+            <h2 id="journeys-heading">Your Journeys</h2>
+            <a href="{% url 'bookings:list' %}" class="form-text-link">View all <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+          </header>
+          <div class="profile-stats" aria-label="Your booking overview">
+            <a class="profile-stat" href="{% url 'bookings:list' %}">
+              <i data-lucide="backpack" aria-hidden="true"></i>
+              <strong>{{ booking_stats.total }}</strong>
+              <span>Booking requests</span>
+            </a>
+            <a class="profile-stat" href="{% url 'bookings:list' %}?status=confirmed">
+              <i data-lucide="calendar-check" aria-hidden="true"></i>
+              <strong>{{ booking_stats.upcoming }}</strong>
+              <span>Upcoming trips</span>
+            </a>
+            <a class="profile-stat" href="{% url 'bookings:list' %}?status=pending">
+              <i data-lucide="clock" aria-hidden="true"></i>
+              <strong>{{ booking_stats.pending }}</strong>
+              <span>Awaiting review</span>
+            </a>
+          </div>
+
+          <div class="profile-trip">
+            <div class="profile-trip__media">
+              {% if next_trip.adventure.image %}
+                <img src="{{ next_trip.adventure.image.url }}" alt="{{ next_trip.adventure.image_alt|default:next_trip.adventure_title }}" loading="lazy" />
+              {% else %}
+                <i data-lucide="mountain-snow" aria-hidden="true"></i>
+              {% endif %}
+            </div>
+            <div class="profile-trip__content">
+              {% if next_trip %}
+                <span class="profile-trip__status"><i data-lucide="check" aria-hidden="true"></i>Next confirmed trip</span>
+                <h3>{{ next_trip.adventure_title }}</h3>
+                <dl class="profile-trip__facts">
+                  <div><dt>Departure</dt><dd>{{ next_trip.travel_date|date:"M j, Y" }}</dd></div>
+                  <div><dt>Group</dt><dd>{{ next_trip.travellers }} traveller{{ next_trip.travellers|pluralize }}</dd></div>
+                </dl>
+                <a href="{{ next_trip.get_absolute_url }}" class="form-text-link">View your request <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+              {% else %}
+                <h3>Your next chapter is out there.</h3>
+                <p>{% if booking_stats.pending %}Our team is reviewing your request. You can follow its progress in My Bookings.{% else %}Find a trip you love and start planning your next adventure.{% endif %}</p>
+                {% if booking_stats.pending %}
+                  <a href="{% url 'bookings:list' %}?status=pending" class="form-text-link">Track your requests <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+                {% else %}
+                  <a href="{% url 'adventures:list' %}" class="form-text-link">Explore adventures <i data-lucide="arrow-right" aria-hidden="true"></i></a>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="form-panel profile-security" aria-labelledby="account-security-heading">
+        <h2 id="account-security-heading">Account Security</h2>
+        <a href="{% url 'accounts:password_change' %}" class="profile-security__link"><i data-lucide="lock-keyhole" aria-hidden="true"></i>Change Password<i data-lucide="chevron-right" aria-hidden="true"></i></a>
+        <form method="post" action="{% url 'accounts:logout' %}" class="profile-signout">
+          {% csrf_token %}
+          <button type="submit" class="profile-security__link"><i data-lucide="log-out" aria-hidden="true"></i>Logout<i data-lucide="chevron-right" aria-hidden="true"></i></button>
+        </form>
+      </section>
     </div>
   </div>
 </section>

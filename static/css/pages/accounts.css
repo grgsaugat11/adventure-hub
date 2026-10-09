@@ -16,12 +16,6 @@
 .account-nav a { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 48px; padding: 0.75rem 1rem; border-radius: var(--radius-md); color: var(--color-text-light); font-weight: 600; font-size: 0.9375rem; }
 .account-nav a[aria-current="page"], .account-nav a:hover { background: #eef5ec; color: var(--color-primary-dark); }
 .account-nav svg { width: 18px; height: 18px; }
-.profile-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 2rem; align-items: start; }
-.profile-security { display: grid; gap: 1.25rem; }
-.profile-security h2 { margin: 0; }
-.profile-security p { color: var(--color-text-light); line-height: 1.7; }
-.profile-security .btn { width: 100%; }
-@media (max-width: 992px) { .profile-layout { grid-template-columns: 1fr; } }
 @media (max-width: 576px) {
   .account-card { padding: 1.5rem; }
   .account-page { padding-bottom: 3rem; }

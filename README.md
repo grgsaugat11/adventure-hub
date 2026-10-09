@@ -124,5 +124,7 @@ return HTTP 429 with `Retry-After`. CSRF checks remain enabled and run first.
 - Add real availability, booking notifications, verified reviews, or calendar
   export when the operational requirements are clear.
 - Evaluate PostgreSQL and shared caching when deployment concurrency warrants it.
-- Fonts and icons currently use third-party CDNs; self-host them when offline
-  support or a strict content security policy is required.
+- Lucide interface icons are served locally through `static/js/icons.js`, a
+  licensed subset of Lucide 0.468.0. Add new icon definitions there when adding
+  `data-lucide` names. Fonts and optional Font Awesome social-brand icons still
+  use third-party CDNs.

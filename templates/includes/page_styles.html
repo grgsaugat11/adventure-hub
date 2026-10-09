@@ -17,6 +17,9 @@
 {% if request.resolver_match.app_name == 'accounts' or request.resolver_match.app_name == 'bookings' %}
 <link rel="stylesheet" href="{% static 'css/pages/accounts.css' %}" />
 {% endif %}
+{% if request.resolver_match.view_name == 'accounts:profile' %}
+<link rel="stylesheet" href="{% static 'css/pages/profile.css' %}" />
+{% endif %}
 {% if request.resolver_match.app_name == 'bookings' %}
 <link rel="stylesheet" href="{% static 'css/pages/bookings.css' %}" />
 {% endif %}

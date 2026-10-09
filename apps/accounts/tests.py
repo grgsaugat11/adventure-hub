@@ -1,10 +1,15 @@
 import re
+from datetime import timedelta
 from urllib.parse import urlparse
 
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
+
+from apps.adventures.models import Adventure, Region
+from apps.bookings.models import BookingRequest
 
 User = get_user_model()
 PASSWORD = "Forest-River-Blue!2026"
@@ -78,6 +83,45 @@ class AccountTests(TestCase):
         self.assertContains(response, "An account already uses this email address.")
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, "traveller@example.com")
+
+    def test_profile_dashboard_counts_and_next_trip_are_scoped_to_current_user(self):
+        region = Region.objects.create(name="Account Region", slug="account-region")
+        adventure = Adventure.objects.create(title="Valley Adventure", slug="valley-adventure", short_description="A valley journey", overview="Explore the valley", region=region, duration_days=3, price="125.50")
+
+        def booking(user, status, days):
+            return BookingRequest.objects.create(user=user, adventure=adventure, adventure_title=adventure.title, duration_days=3, travel_date=timezone.localdate() + timedelta(days=days), travellers=2, unit_price="125.50", contact_name="Traveller", email=user.email, phone="+9779812345678", status=status)
+
+        booking(self.user, "confirmed", 30)
+        next_trip = booking(self.user, "confirmed", 10)
+        booking(self.user, "confirmed", -1)
+        booking(self.user, "pending", 5)
+        booking(self.user, "cancelled", 2)
+        booking(self.other, "confirmed", 1)
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("accounts:profile"))
+        self.assertEqual(response.context["booking_stats"], {"total": 5, "upcoming": 2, "pending": 1})
+        self.assertEqual(response.context["next_trip"], next_trip)
+        self.assertContains(response, next_trip.get_absolute_url())
+
+    def test_profile_dashboard_has_real_empty_state(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("accounts:profile"))
+        self.assertEqual(response.context["booking_stats"], {"total": 0, "upcoming": 0, "pending": 0})
+        self.assertIsNone(response.context["next_trip"])
+        self.assertContains(response, "Your next chapter is out there.")
+        self.assertEqual(response.context["profile_initials"], "TR")
+
+    def test_invalid_profile_submission_preserves_saved_dashboard_identity(self):
+        self.user.first_name = "Saved"
+        self.user.last_name = "Traveller"
+        self.user.save()
+        self.client.force_login(self.user)
+        response = self.client.post(reverse("accounts:profile"), {"first_name": "Unsaved", "last_name": "Name", "email": self.other.email})
+        self.assertTrue(response.context["form"].errors)
+        self.assertEqual(response.context["profile_name"], "Saved Traveller")
+        self.assertEqual(response.context["greeting_name"], "Saved")
+        self.assertEqual(response.context["profile_email"], self.user.email)
+        self.assertEqual(response.context["profile_initials"], "ST")
 
     def test_logout_requires_post(self):
         self.client.force_login(self.user)
